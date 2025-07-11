@@ -1,0 +1,86 @@
+# https://learn.microsoft.com/en-us/windows/wsl/wsl-config#wslconfig
+# https://learn.microsoft.com/ru-ru/windows/wsl/wsl-config#wslconfig
+
+
+[wsl2]
+
+#kernel =
+
+#kernelModules =
+
+# default: 50%
+memory = 16GB
+
+#processors =
+
+# default: true
+#localhostForwarding = false
+
+# default: ""
+#kernelCommandLine = ""
+
+# default: false
+#safeMode = true
+
+# default: 25%
+swap = 0
+
+# default: %USERPROFILE%\AppData\Local\Temp\swap.vhdx
+#swapFile =
+
+# default: true
+#pageReporting = false
+
+# default: true
+#guiApplications = false
+
+# default: false
+#debugConsole = true
+
+# default: true
+#nestedVirtualization = false
+
+# default: 60000
+#vmIdleTimeout =
+
+# default: true
+dnsProxy = false
+
+# default: NAT
+#networkingMode = mirrored
+
+# default: true
+#firewall = false
+
+# default: true
+#dnsTunneling = false
+
+# default: true
+#autoProxy = false
+
+# default: 1TB
+defaultVhdSize = 100GB
+
+
+#[experimental]
+
+# default: dropCache
+#autoMemoryReclaim = gradual
+
+# default: false
+#sparseVhd = true
+
+# default: false
+#bestEffortDnsParsing = true
+
+# default: 10.255.255.254
+#dnsTunnelingIpAddress =
+
+# default: 1000
+#initialAutoProxyTimeout = 
+
+# default: null
+#ignoredPorts =
+
+# default: false
+#hostAddressLoopback = true
