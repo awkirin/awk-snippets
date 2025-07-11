@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/master/install-docker-engine.sh)"
+# sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/install-wsl-xrdp-xfce4.sh)"
 
 
 # Run the following command to uninstall all conflicting packages:
