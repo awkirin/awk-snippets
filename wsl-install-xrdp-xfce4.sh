@@ -2,9 +2,15 @@
 
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/wsl-install-xrdp-xfce4.sh)"
 
-sudo apt install -y xrdp xfce4 xfce4-goodies
+sudo apr -y update
+sudo apt -y install xrdp xfce4 xfce4-goodies
+
+if [[ ! -f "/etc/xrdp/xrdp.ini.bak" ]]; then
+    sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
+fi
 
 sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
+
 sudo sed -i 's/3389/3390/g' /etc/xrdp/xrdp.ini
 sudo sed -i 's/max_bpp=32/#max_bpp=32\nmax_bpp=128/g' /etc/xrdp/xrdp.ini
 sudo sed -i 's/xserverbpp=24/#xserverbpp=24\nxserverbpp=128/g' /etc/xrdp/xrdp.ini
