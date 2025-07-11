@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/wsl-install-xrdp-xfce4.sh)"
+# sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/wsl-install-xrdp-xfce4.sh)"
 
-sudo apr -y update
 sudo apt -y install xrdp xfce4 xfce4-goodies
 
 if [[ ! -f "/etc/xrdp/xrdp.ini.bak" ]]; then
