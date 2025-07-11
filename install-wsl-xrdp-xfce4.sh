@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# repo: https://github.com/awkirin/awk-scripts
 # sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/wsl-install-xrdp-xfce4.sh)"
+
 
 sudo apt -y install xrdp xfce4 xfce4-goodies
 
