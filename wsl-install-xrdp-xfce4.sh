@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/wsl-install-xrdp-xfce4.sh)"
+
 sudo apt install -y xrdp xfce4 xfce4-goodies
 
 sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
