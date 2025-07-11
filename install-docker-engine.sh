@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/master/install-docker-engine.sh)"
+# sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/master/install-docker-engine.sh)"
 
 
 # Run the following command to uninstall all conflicting packages:
@@ -10,7 +10,6 @@ done
 
 
 # Add Docker's official GPG key:
-sudo apt-get -y update
 sudo apt-get -y install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
