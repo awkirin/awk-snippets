@@ -1,13 +1,18 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/osx/clear.sh)"
+#   sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/osx/clear.sh)"
 #
 # repo: https://github.com/awkirin/awk-scripts
 
 # clear
+echo "sudo periodic daily"
 sudo periodic daily
+
+echo "sudo periodic weekly"
 sudo periodic weekly
+
+echo "sudo periodic monthly"
 sudo periodic monthly
 
 ## Clear up RAM memory
