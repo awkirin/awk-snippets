@@ -1,0 +1,34 @@
+#cloud-config
+
+users:
+- name: wsl
+  gecos: wsl
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  shell: /bin/zsh
+
+package_update: true
+package_upgrade: true
+packages:
+  - git
+  - curl
+  - zsh
+  - gh
+  - build-essential
+  - zip
+
+write_files:
+- path: /etc/wsl.conf
+  append: true
+  content: |
+    [boot]
+    systemd=true
+    [user]
+    default=wsl
+
+final_message: |
+  cloud-init has finished.
+  Your instance is running and ready to use.
+  version: $version
+  timestamp: $timestamp
+  datasource: $datasource
+  uptime: $uptime
