@@ -18,17 +18,13 @@ packages:
 
 write_files:
 - path: /etc/wsl.conf
-  append: true
+  #append: true
   content: |
+	[automount]
+		options = "metadata"
+		
     [boot]
     systemd=true
+	
     [user]
     default=wsl
-
-final_message: |
-  cloud-init has finished.
-  Your instance is running and ready to use.
-  version: $version
-  timestamp: $timestamp
-  datasource: $datasource
-  uptime: $uptime
