@@ -9,22 +9,30 @@ users:
 package_update: true
 package_upgrade: true
 packages:
-  - git
-  - curl
-  - zsh
-  - gh
-  - build-essential
-  - zip
+- git
+- curl
+- zsh
+- gh
+- build-essential
+- zip
 
 write_files:
 - path: /etc/wsl.conf
-  #append: true
+  append: true
   content: |
-	[automount]
-		options = "metadata"
-		
+    [automount]
+      options = "metadata"
     [boot]
     systemd=true
-	
     [user]
     default=wsl
+
+runcmd:
+- cd ~
+- curl -fsSL https://get.lando.dev/setup-lando.sh -o setup-lando.sh
+- chmod +x ./setup-lando.sh
+- bash setup-lando.sh -y
+
+- sudo -u wsl touch /home/wsl/.zprofile
+- sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended --keep-zshrc
+- sudo chsh -s /bin/zsh wsl  # Обязательно!
