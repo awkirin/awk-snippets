@@ -1,7 +1,11 @@
 #!/bin/bash
-
+#
+# This script should be run via curl:
+#   sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/install-wsl-xrdp-xfce4.sh)"
+#
 # repo: https://github.com/awkirin/awk-scripts
-# sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/install-wsl-xrdp-xfce4.sh)"
+
+set -euo pipefail
 
 
 # Run the following command to uninstall all conflicting packages:
