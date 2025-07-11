@@ -4,22 +4,8 @@ echo 'bedrock-install'
 cd ${BEDROCK_PATH}
 
 composer clear-cache
-
 composer update || true
-
-composer config repositories.awkirin '{"type": "composer", "url": "https://packagist.awkirin.ru", "only": ["wpackagist-plugin/*", "wpackagist-muplugin/*", "wpackagist-theme/*"]}' || true
-composer require wpackagist-muplugin/advanced-custom-fields-pro:* || true
-composer require wpackagist-muplugin/acf-extended-pro:* || true
-composer require wpackagist-plugin/wordpress-seo:* || true
-composer require wpackagist-muplugin/wordpress-seo-premium:* || true
-
-composer require wpackagist-plugin/wp-rocket:* || true
-composer require wpackagist-plugin/admin-columns-pro:* || true
-composer require wpackagist-plugin/ar-contactus:* || true
-
-
 composer show | grep "wpackagist-theme/twenty" | awk '{print $1}' | xargs -I {} composer remove {} || true
-
 
 wp package install aaemnnosttv/wp-cli-dotenv-command:^2.0 || true
 wp dotenv init --template=.env.example --with-salts || true
