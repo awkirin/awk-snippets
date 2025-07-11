@@ -1,38 +1,51 @@
 #cloud-config
 
 users:
-- name: wsl
-  gecos: wsl
-  sudo: ALL=(ALL) NOPASSWD:ALL
-  shell: /bin/zsh
+  - name: wsl
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
 
 package_update: true
 package_upgrade: true
 packages:
-- git
-- curl
-- zsh
-- gh
-- build-essential
-- zip
+  - git
+  - gh
+  - curl
+  - zip
+  - zsh
+  - build-essential
+  - fonts-powerline
+  - procps
+  - file
 
 write_files:
-- path: /etc/wsl.conf
-  append: true
-  content: |
-    [automount]
-      options = "metadata"
-    [boot]
-    systemd=true
-    [user]
-    default=wsl
+  - path: /etc/wsl.conf
+    append: true
+    content: |
+      [automount]
+        options = "metadata"
+      [user]
+      default=wsl
+
+  - path: /tmp/wsl-init
+    append: true
+    content: |
+      #!/bin/bash
+      set -euo pipefail
+      
+      NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      
+      # Установка Lando
+      curl -fsSL https://get.lando.dev/setup-lando.sh -o setup-lando.sh
+      chmod +x ./setup-lando.sh
+      bash setup-lando.sh -y
+    
+      # Установка Oh My Zsh
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      sudo chsh -s $(which zsh) wsl
+      sudo chsh -s $(which zsh) $USER
+      [ -f ~/.zshrc ] || cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+
 
 runcmd:
-- cd ~
-- curl -fsSL https://get.lando.dev/setup-lando.sh -o setup-lando.sh
-- chmod +x ./setup-lando.sh
-- bash setup-lando.sh -y
-
-- sudo -u wsl touch /home/wsl/.zprofile
-- sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended --keep-zshrc
-- sudo chsh -s /bin/zsh wsl  # Обязательно!
+  - chmod +x /tmp/wsl-init
