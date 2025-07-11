@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/HEAD/install-docker-engine.sh)"
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/master/install-docker-engine.sh)"
 
 
 # Run the following command to uninstall all conflicting packages:
