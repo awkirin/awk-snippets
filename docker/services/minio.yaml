@@ -1,0 +1,16 @@
+services:
+  minio:
+    image: bitnami/minio:2025
+#    ports:
+#      - '9000:9000'
+#      - '9001:9001'
+    volumes:
+      - 'minio_data:/bitnami/minio/data'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.minio.rule=Host(`minio.localhost`)"
+      - "traefik.http.services.minio.loadbalancer.server.port=80"
+
+volumes:
+  minio_data:
+    driver: local
