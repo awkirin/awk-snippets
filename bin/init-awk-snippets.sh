@@ -5,7 +5,7 @@
 #
 # repo: https://github.com/awkirin/awk-snippets
 
-awk_snippets() {
+export awk_snippets() {
     local path="$1"
     sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/$path)"
 }
