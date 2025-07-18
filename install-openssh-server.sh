@@ -1,24 +1,38 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/install-openssh-server.sh)"
+#   sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/install-openssh-server.sh)"
 #
-# repo: https://github.com/awkirin/awk-scripts
+# repo: https://github.com/awkirin/awk-snippets
 
 set -euo pipefail
 
 
 sudo apt -y install openssh-server
 
-if [[ ! -f "/etc/ssh/sshd_config.original" ]]; then
-    sudo cp "/etc/ssh/sshd_config" ""/etc/ssh/sshd_config.original"
-fi
-
 sudo systemctl enable ssh
-sudo systemctl restart ssh
 
-
-#PasswordAuthentication yes -> PasswordAuthentication no
-
+sudo tee /etc/ssh/sshd_config.d/1000-awkirin-security.conf > /dev/null <<EOF
+# base
+PasswordAuthentication no
 PermitRootLogin no
 UsePAM no
+
+# additional
+PermitEmptyPasswords no
+MaxAuthTries 3
+IgnoreRhosts yes
+StrictModes yes
+UseDNS no
+PermitUserEnvironment no
+
+# strange
+#X11Forwarding no
+#AllowTcpForwarding no
+#AllowAgentForwarding no
+EOF
+
+sudo systemctl reload ssh
+
+
+

@@ -1,11 +1,11 @@
 Vagrant.configure("2") do |config|
 
     config.vm.box = "ubuntu/jammy64"
-    config.vm.hostname = "vagrant-ubuntu"
+    config.vm.hostname = "vubuntu"
 
     config.vm.provider "virtualbox" do |vb|
-        vb.name = "VUbuntu"
-        vb.gui = true
+        vb.name = "vubuntu"
+        vb.gui = false
         vb.memory = "2048"
         vb.customize [
             "modifyvm", :id,
@@ -25,6 +25,7 @@ Vagrant.configure("2") do |config|
           git \
           tree \
           htop \
+          zsh \
           net-tools
 
         # add admin
