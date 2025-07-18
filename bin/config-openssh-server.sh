@@ -7,9 +7,6 @@
 
 set -euo pipefail
 
-
-sudo apt-get -y install openssh-server
-
 sudo tee /etc/ssh/sshd_config.d/1000-awkirin-security.conf > /dev/null <<EOF
 # base
 PasswordAuthentication no

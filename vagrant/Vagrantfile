@@ -20,6 +20,11 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", inline: <<-SHELL
 
+        awk_snippets() {
+            local path="$1"
+            sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/$path)"
+        }
+
         sudo apt-get -y update
 
         sudo apt-get -y install \
@@ -28,10 +33,11 @@ Vagrant.configure("2") do |config|
           tree \
           htop \
           zsh \
-          net-tools
+          net-tools \
+          openssh-server
 
-        # install ssh-server
-        sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/install-openssh-server.sh)"
+        # config ssh-server
+        sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/config-openssh-server.sh)"
 
         # add admin
         sudo USER_NAME="dev" USER_PASS="dev" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-admin-user.sh)"
