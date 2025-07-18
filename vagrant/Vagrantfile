@@ -1,0 +1,28 @@
+Vagrant.configure("2") do |config|
+
+    config.vm.box = "ubuntu/jammy64"
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.name = "VUbuntu"
+        vb.gui = true
+        vb.memory = "2048"
+        vb.customize ["modifyvm", :id, "--audio", "none"]
+        vb.customize ["modifyvm", :id, "--vram", "128"]
+        vb.customize ["modifyvm", :id, "--ioapic", "on"]
+        vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+    end
+
+    config.vm.provision "shell", inline: <<-SHELL
+        sudo apt update
+
+        sudo apt-get install -y \
+          curl \
+          git \
+          tree \
+          htop \
+          net-tools
+
+        echo "Говно"
+    SHELL
+
+end

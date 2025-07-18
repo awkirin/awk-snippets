@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/wsl-install-xrdp-xfce4.sh)"
+#   sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/install-wsl-xrdp-xfce4.sh)"
 #
 # repo: https://github.com/awkirin/awk-scripts
 
@@ -10,11 +10,9 @@ set -euo pipefail
 
 sudo apt -y install xrdp xfce4 xfce4-goodies
 
-if [[ ! -f "/etc/xrdp/xrdp.ini.bak" ]]; then
-    sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
+if [[ ! -f "/etc/xrdp/xrdp.ini.original" ]]; then
+    sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.original
 fi
-
-sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
 
 sudo sed -i 's/3389/3390/g' /etc/xrdp/xrdp.ini
 sudo sed -i 's/max_bpp=32/#max_bpp=32\nmax_bpp=128/g' /etc/xrdp/xrdp.ini
