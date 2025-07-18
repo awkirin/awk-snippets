@@ -10,8 +10,6 @@ set -euo pipefail
 
 sudo apt-get -y install openssh-server
 
-sudo systemctl enable ssh
-
 sudo tee /etc/ssh/sshd_config.d/1000-awkirin-security.conf > /dev/null <<EOF
 # base
 PasswordAuthentication no
@@ -19,12 +17,12 @@ PermitRootLogin no
 UsePAM no
 
 # additional
-PermitEmptyPasswords no
-MaxAuthTries 3
-IgnoreRhosts yes
-StrictModes yes
-UseDNS no
-PermitUserEnvironment no
+#PermitEmptyPasswords no
+#MaxAuthTries 3
+#IgnoreRhosts yes
+#StrictModes yes
+#UseDNS no
+#PermitUserEnvironment no
 
 # strange
 #X11Forwarding no
@@ -32,6 +30,7 @@ PermitUserEnvironment no
 #AllowAgentForwarding no
 EOF
 
+sudo systemctl enable ssh
 sudo systemctl reload ssh
 
 
