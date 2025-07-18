@@ -6,23 +6,33 @@ Vagrant.configure("2") do |config|
         vb.name = "VUbuntu"
         vb.gui = true
         vb.memory = "2048"
-        vb.customize ["modifyvm", :id, "--audio", "none"]
-        vb.customize ["modifyvm", :id, "--vram", "128"]
-        vb.customize ["modifyvm", :id, "--ioapic", "on"]
-        vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+        vb.customize [
+            "modifyvm", :id,
+            "--audio", "none",
+            "--vram", "256",
+            "--ioapic", "on",
+            "--monitorcount", "1",
+            "--graphicscontroller", "vmsvga",
+            "--accelerate3d", "on"
+        ]
+
     end
 
     config.vm.provision "shell", inline: <<-SHELL
-        sudo apt update
 
-        sudo apt-get install -y \
+        # Создание пользователя
+        sudo useradd -m -s /bin/bash dev
+        echo "dev:dev" | sudo chpasswd
+        sudo usermod -aG sudo dev
+        echo "dev ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/dev
+
+        sudo apt-get -y update && apt-get -y install \
           curl \
           git \
           tree \
           htop \
           net-tools
 
-        echo "Говно"
     SHELL
 
 end
