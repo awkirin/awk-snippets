@@ -15,6 +15,7 @@ sudo tee /etc/ssh/sshd_config.d/1000-awkirin-security.conf > /dev/null <<EOF
 PasswordAuthentication no
 PermitRootLogin no
 UsePAM no
+EOF
 
 # additional
 #PermitEmptyPasswords no
@@ -28,10 +29,7 @@ UsePAM no
 #X11Forwarding no
 #AllowTcpForwarding no
 #AllowAgentForwarding no
-EOF
+
 
 sudo systemctl enable ssh
 sudo systemctl reload ssh
-
-
-

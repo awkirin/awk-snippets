@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
           zsh \
           net-tools
 
+        # install ssh-server
         sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/install-openssh-server.sh)"
 
         # add admin
