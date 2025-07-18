@@ -27,8 +27,8 @@ Vagrant.configure("2") do |config|
           htop \
           net-tools
 
-        # Создание пользователя login:pass dev:dev
-        sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-admin-user.sh)"
+        # add admin
+        sudo USER_NAME="dev" USER_PASS="dev" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-admin-user.sh)"
 
     SHELL
 
