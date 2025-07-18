@@ -1,14 +1,14 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   sudo apt -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/install-openssh-server.sh)"
+#   sudo apt-get -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/install-openssh-server.sh)"
 #
 # repo: https://github.com/awkirin/awk-snippets
 
 set -euo pipefail
 
 
-sudo apt -y install openssh-server
+sudo apt-get -y install openssh-server
 
 sudo systemctl enable ssh
 

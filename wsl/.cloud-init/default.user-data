@@ -60,7 +60,7 @@ runcmd:
         echo >> "${HOME}/.bashrc"
         echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> "${HOME}/.bashrc"    
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-        #sudo apt -y install build-essential
+        #sudo apt-get -y install build-essential
         #brew install gcc
       }
 
@@ -172,7 +172,7 @@ runcmd:
       composer global require laravel/installer
     
     
-      sudo apt -y upgrade
+      sudo apt-get -y upgrade
     EOF
     
 

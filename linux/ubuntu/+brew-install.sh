@@ -6,5 +6,5 @@ echo >> /home/awkirin/.bashrc
 echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/awkirin/.bashrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-sudo apt -y install build-essential
+sudo apt-get -y install build-essential
 brew install gcc

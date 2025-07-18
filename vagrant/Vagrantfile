@@ -20,13 +20,17 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", inline: <<-SHELL
 
-        sudo apt-get -y update && apt-get -y install \
+        sudo apt-get -y update
+
+        sudo apt-get -y install \
           curl \
           git \
           tree \
           htop \
           zsh \
           net-tools
+
+        sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/install-openssh-server.sh)"
 
         # add admin
         sudo USER_NAME="dev" USER_PASS="dev" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-admin-user.sh)"
