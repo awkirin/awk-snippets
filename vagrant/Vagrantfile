@@ -20,14 +20,6 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "shell", inline: <<-SHELL
 
-        source <(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/init-awk-snippets.sh)
-
-
-#         awk_snippets() {
-#             local path="$1"
-#             sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/$path)"
-#         }
-
         sudo apt-get -y update
 
         sudo apt-get -y install \
@@ -39,10 +31,15 @@ Vagrant.configure("2") do |config|
           net-tools \
           openssh-server
 
+        # init awk_snippets
+        source <(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/init-awk-snippets.sh)
+
         # config ssh-server
+        awk_snippets config-openssh-server.sh
         sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/config-openssh-server.sh)"
 
         # add admin
+        awk_snippets config-openssh-server.sh
         sudo USER_NAME="dev" USER_PASS="dev" /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-admin-user.sh)"
 
     SHELL
