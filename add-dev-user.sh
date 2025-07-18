@@ -3,9 +3,17 @@
 # This script should be run via curl:
 #   sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-dev-user.sh)"
 #
-# repo: https://github.com/awkirin/awk-scripts
+# repo: https://github.com/awkirin/awk-snippets
 
-sudo useradd -m -s /bin/bash dev
-echo "dev:dev" | sudo chpasswd
-sudo usermod -aG sudo dev
-echo "dev ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/dev
+USER_NAME="${USER_NAME:-dev}"
+USER_PASS="${USER_PASS:-dev}"
+
+sudo useradd -m -s /bin/bash "${USER_NAME}"
+echo "${USER_NAME}:${USER_PASS} | sudo chpasswd
+sudo usermod -aG sudo "${USER_NAME}"
+echo ""${USER_NAME}" ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/"${USER_NAME}"
+
+echo "=============================================="
+echo " name: "${USER_NAME}""
+echo " pass: "${USER_PASS}""
+echo "=============================================="
