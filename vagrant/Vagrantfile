@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
           net-tools
 
         # Создание пользователя login:pass dev:dev
-        sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-dev-user.sh)"
+        sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/add-admin-user.sh)"
 
     SHELL
 
