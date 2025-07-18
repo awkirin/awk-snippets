@@ -16,4 +16,4 @@ echo "${USER_NAME} ALL=(ALL) NOPASSWD:ALL" | sudo tee "/etc/sudoers.d/${USER_NAM
 echo "==============================================2"
 echo " name: ${USER_NAME}"
 echo " pass: ${USER_PASS}"
-echo "=============================================="
+echo "==============================================2"
