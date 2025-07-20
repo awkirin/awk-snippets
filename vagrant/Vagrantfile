@@ -1,9 +1,14 @@
+# https://vagrant.elab.pro/downloads/
+
+# ENV['VAGRANT_SERVER_URL'] = 'https://vagrant.elab.pro'
 HOSTNAME='dockerhost.local'
 USER='vagrant'
 
 Vagrant.configure("2") do |config|
 
     config.vm.hostname = HOSTNAME
+
+    # ubuntu/jammy64 bento/ubuntu-24.04
     config.vm.box = "ubuntu/jammy64"
 
 #     config.vm.synced_folder "./apps", "/apps",
@@ -40,7 +45,11 @@ Vagrant.configure("2") do |config|
 
             # Говорят нужно для оптимизации
             apt-get -y install virtualbox-guest-x11 virtualbox-guest-utils
-#             systemctl restart virtualbox-guest-utils # выдает ошибку
+            sudo systemctl restart virtualbox-guest-utils
+
+            apt-get -y update
+            do-release-upgrade
+
 
 #             # SETUP DOCKER WITH SOCKET EXPOSED ON PORT 2375
 #             wget -qO- https://get.docker.com/ | sh
@@ -52,6 +61,9 @@ Vagrant.configure("2") do |config|
 #             " > /etc/systemd/system/docker.service.d/override.conf
 #             systemctl daemon-reload
 #             systemctl restart docker.service
+
+
+
 
         SHELL
     end
