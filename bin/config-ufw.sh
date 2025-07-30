@@ -1,3 +1,10 @@
+#!/bin/bash
+#
+# This script should be run via curl:
+#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/config-ufw.sh)"
+#
+# repo: https://github.com/awkirin/awk-snippets
+
 
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
