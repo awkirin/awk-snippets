@@ -5,6 +5,11 @@
 #
 # repo: https://github.com/awkirin/awk-snippets
 
+# прямая ссылка на скачивание
+# https://data.services.jetbrains.com/products/download?platform=linux&code=TBA
+
+
+
 set -e
 set -o pipefail
 
