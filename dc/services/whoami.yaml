@@ -1,3 +1,0 @@
-services:
-  whoami:
-    image: traefik/whoami
