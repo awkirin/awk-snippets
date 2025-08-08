@@ -13,6 +13,10 @@ APP_NAME="${APP_NAME:-awkirin}"
 THEME_DIR_NAME="${THEME_DIR_NAME:-sage}"
 THEME_DIR="${THEME_DIR:-web/app/themes/sage}"
 
+ADMIN_USER="${ADMIN_USER:-admin}"
+ADMIN_PASSWORD="${ADMIN_PASSWORD:-admin}"
+ADMIN_EMAIL="${ADMIN_EMAIL:-test@test.ru}"
+
 
 if [[ ! -f ".lando.yml" ]]; then
     cat > .lando.yml <<EOL
@@ -68,7 +72,7 @@ if [[ ! -f "composer.json" ]]; then
         wpackagist-plugin/wordpress-seo \
         wpackagist-plugin/wordpress-seo-premium
 
-    lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user=admin --admin_password=admin --admin_email=test@test.ru
+    lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
 
 fi
 
