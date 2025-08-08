@@ -104,7 +104,7 @@ if [[ ! -d "${THEME_DIR}/inc" ]]; then
 
 foreach ([ 'blocks', 'field-groups', 'fields', 'option-pages', 'shortcodes',] as $dir) {
     $iterator = new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator(__DIR__ . '/blocks', FilesystemIterator::SKIP_DOTS)
+        new \RecursiveDirectoryIterator(__DIR__ . "/$dir", FilesystemIterator::SKIP_DOTS)
     );
     foreach ($iterator as $file) {
         if (!$file->isFile()) {
