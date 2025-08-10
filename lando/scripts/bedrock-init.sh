@@ -35,8 +35,9 @@ services:
     healthcheck: false
     overrides:
       volumes:
-        - ~/.composer/auth.json:/root/.config/composer/auth.json
-        - ~/.composer/config.json:/root/.config/composer/config.json
+#        - ~/.composer/auth.json:/root/.config/composer/composer.json
+        - ~/.composer/auth.json:/var/www/composer/auth.json
+        - ~/.composer/config.json:/var/www/composer/config.json
   appserver_nginx:
     scanner: false
     healthcheck: false
