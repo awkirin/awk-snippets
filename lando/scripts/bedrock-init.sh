@@ -19,6 +19,7 @@ ADMIN_EMAIL="${ADMIN_EMAIL:-test@test.ru}"
 
 
 if [[ ! -f ".lando.yml" ]]; then
+
     cat > .lando.yml <<EOL
 name: ${APP_NAME}
 recipe: wordpress
@@ -32,6 +33,10 @@ services:
   appserver:
     scanner: false
     healthcheck: false
+    overrides:
+      volumes:
+        - ~/.composer/auth.json:/root/.composer/auth.json
+        - ~/.composer/config.json:/root/.composer/config.json
   appserver_nginx:
     scanner: false
     healthcheck: false
