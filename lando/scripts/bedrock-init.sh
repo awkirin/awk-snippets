@@ -72,12 +72,9 @@ if [[ ! -f "composer.json" ]]; then
 
     lando composer remove wpackagist-theme/twentytwentyfive
 
-    lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
-
     # config bedrock
     lando wp package install aaemnnosttv/wp-cli-dotenv-command:^2.0 || true
     lando wp dotenv init --template=.env.example --with-salts || true
-
 
 
     lando exec appserver -- echo "" >> ".env.example"
@@ -99,8 +96,6 @@ if [[ ! -f "composer.json" ]]; then
     lando exec appserver -- perl -i -pe "s|DB_USER='database_user'|DB_USER='wordpress'|g" ".env"
     lando exec appserver -- perl -i -pe "s|DB_PASSWORD='database_password'|DB_PASSWORD='wordpress'|g" ".env"
     lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME=''|g" ".env"
-
-
 
     cat > ".htaccess" <<'EOL'
 RewriteEngine on
@@ -133,6 +128,10 @@ EOL
         wpackagist-plugin/ar-contactus \
         wpackagist-plugin/wordpress-seo \
         wpackagist-plugin/wordpress-seo-premium
+
+
+
+    lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
 
 fi
 
