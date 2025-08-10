@@ -99,7 +99,7 @@ if [[ ! -f "composer.json" ]]; then
     lando exec appserver -- perl -i -pe "s|DB_NAME='database_name'|DB_NAME='wordpress'|g" ".env"
     lando exec appserver -- perl -i -pe "s|DB_USER='database_user'|DB_USER='wordpress'|g" ".env"
     lando exec appserver -- perl -i -pe "s|DB_PASSWORD='database_password'|DB_PASSWORD='wordpress'|g" ".env"
-    lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME=''|g" ".env"
+    lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME='https://${APP_NAME}.lndo.site'|g" ".env"
 
     cat > ".htaccess" <<'EOL'
 RewriteEngine on
