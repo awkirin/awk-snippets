@@ -66,58 +66,39 @@ fi
 
 if [[ ! -f "composer.json" ]]; then
 
-    lando composer create-project roots/bedrock /tmp/bedrock
-    lando exec appserver -- bash -c 'cp -a /tmp/bedrock/. . && rm -rf /tmp/bedrock'
+    # install bedrock
+    lando composer create-project roots/bedrock bedrock
+    lando exec appserver -- bash -c 'cp -a bedrock/. . && rm -rf bedrock'
 
-    composer remove wpackagist-theme/twentytwentyfive
+    lando composer remove wpackagist-theme/twentytwentyfive
 
-    composer require jgrossi/corcel
-    composer require illuminate/auth
+    lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
 
-    composer require \
-        wpackagist-plugin/wp-rocket \
-        wpackagist-plugin/advanced-custom-fields-pro \
-        wpackagist-plugin/acf-extended-pro \
-        wpackagist-plugin/ar-contactus \
-        wpackagist-plugin/wordpress-seo \
-        wpackagist-plugin/wordpress-seo-premium
-
-
-
-
+    # config bedrock
     lando wp package install aaemnnosttv/wp-cli-dotenv-command:^2.0 || true
     lando wp dotenv init --template=.env.example --with-salts || true
-    lando wp dotenv set DB_HOST 'database' || true
-    lando wp dotenv set DB_NAME 'wordpress' || true
-    lando wp dotenv set DB_USER 'wordpress' || true
-    lando wp dotenv set DB_PASSWORD 'wordpress' || true
-    lando wp dotenv set DB_PREFIX 'wp_' || true
-    lando wp dotenv set WP_HOME '' || true
-
-    lando wp dotenv set MAIL_HOST '' || true
-    lando wp dotenv set MAIL_PORT '' || true
-    lando wp dotenv set MAIL_USERNAME '' || true
-    lando wp dotenv set MAIL_PASSWORD '' || true
-    lando wp dotenv set MAIL_FROM_ADDRESS '' || true
-    lando wp dotenv set MAIL_FROM_NAME '' || true
-    lando wp dotenv set MAIL_ENCRYPTION '' || true
 
 
 
+    lando exec appserver -- echo "" >> ".env.example"
+    lando exec appserver -- echo "DISABLE_WP_CRON=true" >> ".env.example"
 
+    lando exec appserver -- echo "" >> ".env.example"
+    lando exec appserver -- echo "MAIL_HOST=''" >> ".env.example"
+    lando exec appserver -- echo "MAIL_PORT=''" >> ".env.example"
+    lando exec appserver -- echo "MAIL_USERNAME=''" >> ".env.example"
+    lando exec appserver -- echo "MAIL_PASSWORD=''" >> ".env.example"
+    lando exec appserver -- echo "MAIL_FROM_ADDRESS=''" >> ".env.example"
+    lando exec appserver -- echo "MAIL_FROM_NAME=''" >> ".env.example"
+    lando exec appserver -- echo "MAIL_ENCRYPTION=''" >> ".env.example"
 
-
-
-#     lando exec appserver -- cp ".env.example" ".env"
-#     lando exec appserver -- perl -i -pe "s|DB_NAME='database_name'|DB_NAME='wordpress'|g" ".env"
-#     lando exec appserver -- perl -i -pe "s|DB_USER='database_user'|DB_USER='wordpress'|g" ".env"
-#     lando exec appserver -- perl -i -pe "s|DB_PASSWORD='database_password'|DB_PASSWORD='wordpress'|g" ".env"
-#     lando exec appserver -- perl -i -pe "s|# DB_HOST='localhost'|DB_HOST='database'|g" ".env"
-#     lando exec appserver -- perl -i -pe "s|# DB_PREFIX='wp_'|DB_PREFIX='wp_'|g" ".env"
-#     lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME='https://${APP_NAME}.lndo.site'|g" ".env"
-
-
-
+    lando exec appserver -- cp ".env.example" ".env"
+    lando exec appserver -- perl -i -pe "s|# DB_HOST='localhost'|DB_HOST='database'|g" ".env"
+    lando exec appserver -- perl -i -pe "s|# DB_PREFIX='wp_'|DB_PREFIX='wp_'|g" ".env"
+    lando exec appserver -- perl -i -pe "s|DB_NAME='database_name'|DB_NAME='wordpress'|g" ".env"
+    lando exec appserver -- perl -i -pe "s|DB_USER='database_user'|DB_USER='wordpress'|g" ".env"
+    lando exec appserver -- perl -i -pe "s|DB_PASSWORD='database_password'|DB_PASSWORD='wordpress'|g" ".env"
+    lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME=''|g" ".env"
 
 
 
@@ -141,21 +122,23 @@ RewriteRule . /index.php [L]
 # END WordPress
 EOL
 
+    # install plugins
+    lando composer require jgrossi/corcel
+    lando composer require illuminate/auth
 
+    lando composer require \
+        wpackagist-plugin/wp-rocket \
+        wpackagist-plugin/advanced-custom-fields-pro \
+        wpackagist-plugin/acf-extended-pro \
+        wpackagist-plugin/ar-contactus \
+        wpackagist-plugin/wordpress-seo \
+        wpackagist-plugin/wordpress-seo-premium
 
-
-
-
-
-
-
-
-    lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
 fi
 
 if [[ ! -d "${THEME_DIR}" ]]; then
 
-    composer create-project roots/sage "${THEME_DIR}"
+    lando composer create-project roots/sage "${THEME_DIR}"
 
     echo "APP_URL='https://${APP_NAME}.lndo.site'" > "${THEME_DIR}/.env"
 
