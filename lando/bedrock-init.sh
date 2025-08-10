@@ -70,7 +70,35 @@ if [[ ! -f "composer.json" ]]; then
     lando composer create-project roots/bedrock /tmp/bedrock
     lando exec appserver -- bash -c 'cp -a /tmp/bedrock/. . && rm -rf /tmp/bedrock'
 
+
+    cat > ".htaccess" <<'EOL'
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} !web/
+RewriteRule ^(.*)$ /web/$1 [L]
+EOL
+
+    cat > "web/.htaccess" <<'EOL'
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+EOL
+
+
+
+
     composer remove wpackagist-theme/twentytwentyfive
+
+    composer require jgrossi/corcel
+    composer require illuminate/auth
+
     composer require \
         wpackagist-plugin/wp-rocket \
         wpackagist-plugin/advanced-custom-fields-pro \
