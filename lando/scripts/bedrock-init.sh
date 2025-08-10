@@ -176,6 +176,6 @@ echo "require_once __DIR__ . '/inc/_include.php';" >> "${THEME_DIR}/functions.ph
 fi
 
 
-lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
+lando wp core install --url="${APP_NAME:-awkirin}.lndo.site" --title="${APP_NAME:-admin}" --admin_user="${ADMIN_USER:-admin}" --admin_password="${ADMIN_PASSWORD:-admin}" --admin_email="${ADMIN_EMAIL:-test@test.ru}"
 
-lando wp theme activate "${THEME_DIR_NAME}"
+lando wp theme activate "${THEME_DIR_NAME:-sage}"
