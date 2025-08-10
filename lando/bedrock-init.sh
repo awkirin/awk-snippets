@@ -52,8 +52,12 @@ tooling:
     service: node
 
 proxy:
+  appserver_nginx:
+    - "${APP_NAME}.lndo.site"
   pma:
     - "${APP_NAME}.lndo.site/pma"
+  node:
+    - "localhost:5173"
 
 
 EOL
@@ -63,7 +67,15 @@ fi
 
 if [[ ! -f "composer.json" ]]; then
 
-    lando composer create-project roots/bedrock /tmp/bedrock
+    composer create-project roots/bedrock /tmp/bedrock
+    composer remove wpackagist-theme/twentytwentyfive
+    composer require \
+        wpackagist-plugin/wp-rocket \
+        wpackagist-plugin/advanced-custom-fields-pro \
+        wpackagist-plugin/acf-extended-pro \
+        wpackagist-plugin/ar-contactus \
+        wpackagist-plugin/wordpress-seo \
+        wpackagist-plugin/wordpress-seo-premium
 
     lando exec appserver -- bash -c 'cp -a /tmp/bedrock/. . && rm -rf /tmp/bedrock'
 
@@ -76,34 +88,23 @@ if [[ ! -f "composer.json" ]]; then
     lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME='https://${APP_NAME}.lndo.site'|g" ".env"
 
 
-    composer remove wpackagist-theme/twentytwentyfive
-
-    composer require \
-        wpackagist-plugin/wp-rocket \
-        wpackagist-plugin/advanced-custom-fields-pro \
-        wpackagist-plugin/acf-extended-pro \
-        wpackagist-plugin/ar-contactus \
-        wpackagist-plugin/wordpress-seo \
-        wpackagist-plugin/wordpress-seo-premium
-
     lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
-
 fi
 
 if [[ ! -d "${THEME_DIR}" ]]; then
 
-    lando composer create-project roots/sage "${THEME_DIR}"
+    composer create-project roots/sage "${THEME_DIR}"
 
     echo "APP_URL='https://${APP_NAME}.lndo.site'" > "${THEME_DIR}/.env"
+
 
     lando yarn --cwd "${THEME_DIR}" install
     lando yarn --cwd "${THEME_DIR}" build
 
-    lando wp theme activate "${THEME_DIR_NAME}"
-
     rm -rf "${THEME_DIR}/node_modules"
     yarn --cwd "${THEME_DIR}" install
-    
+
+    lando wp theme activate "${THEME_DIR_NAME}"
 fi
 
 if [[ ! -d "${THEME_DIR}/inc" ]]; then
