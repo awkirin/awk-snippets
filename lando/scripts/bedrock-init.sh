@@ -94,7 +94,6 @@ if [[ ! -f "composer.json" ]]; then
     lando wp package install aaemnnosttv/wp-cli-dotenv-command:^2.0 || true
     lando wp dotenv init --template=.env.example --with-salts || true
 
-    lando exec appserver -- cp ".env.example" ".env"
     lando exec appserver -- perl -i -pe "s|# DB_HOST='localhost'|DB_HOST='database'|g" ".env"
     lando exec appserver -- perl -i -pe "s|# DB_PREFIX='wp_'|DB_PREFIX='wp_'|g" ".env"
     lando exec appserver -- perl -i -pe "s|DB_NAME='database_name'|DB_NAME='wordpress'|g" ".env"
