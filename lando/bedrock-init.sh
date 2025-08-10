@@ -41,9 +41,18 @@ services:
     type: node:22
     scanner: false
     healthcheck: false
+  pma:
+    type: phpmyadmin
+
 tooling:
   yarn:
     service: node
+
+proxy:
+  pma:
+    - "${APP_NAME}.lndo.site/pma"
+
+
 EOL
 
     lando rebuild -y
