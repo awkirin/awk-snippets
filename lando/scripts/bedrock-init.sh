@@ -129,10 +129,6 @@ EOL
         wpackagist-plugin/wordpress-seo \
         wpackagist-plugin/wordpress-seo-premium
 
-
-
-    lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
-
 fi
 
 if [[ ! -d "${THEME_DIR}" ]]; then
@@ -148,7 +144,6 @@ if [[ ! -d "${THEME_DIR}" ]]; then
     rm -rf "${THEME_DIR}/node_modules"
     yarn --cwd "${THEME_DIR}" install
 
-    lando wp theme activate "${THEME_DIR_NAME}"
 fi
 
 if [[ ! -d "${THEME_DIR}/inc" ]]; then
@@ -178,3 +173,8 @@ echo "" >> "${THEME_DIR}/functions.php"
 echo "require_once __DIR__ . '/inc/_include.php';" >> "${THEME_DIR}/functions.php"
 
 fi
+
+
+lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
+
+lando wp theme activate "${THEME_DIR_NAME}"
