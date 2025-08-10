@@ -35,7 +35,6 @@ services:
     healthcheck: false
     overrides:
       volumes:
-#        - ~/.composer/auth.json:/root/.config/composer/composer.json
         - ~/.composer/auth.json:/var/www/.composer/auth.json
         - ~/.composer/config.json:/var/www/.composer/config.json
   appserver_nginx:
@@ -78,11 +77,7 @@ if [[ ! -f "composer.json" ]]; then
 
     lando composer remove wpackagist-theme/twentytwentyfive
 
-    # config bedrock
-    lando wp package install aaemnnosttv/wp-cli-dotenv-command:^2.0 || true
-    lando wp dotenv init --template=.env.example --with-salts || true
-
-
+    # extend env.example
     lando exec appserver -- echo "" >> ".env.example"
     lando exec appserver -- echo "DISABLE_WP_CRON=true" >> ".env.example"
 
@@ -94,6 +89,10 @@ if [[ ! -f "composer.json" ]]; then
     lando exec appserver -- echo "MAIL_FROM_ADDRESS=''" >> ".env.example"
     lando exec appserver -- echo "MAIL_FROM_NAME=''" >> ".env.example"
     lando exec appserver -- echo "MAIL_ENCRYPTION=''" >> ".env.example"
+
+    # init .env
+    lando wp package install aaemnnosttv/wp-cli-dotenv-command:^2.0 || true
+    lando wp dotenv init --template=.env.example --with-salts || true
 
     lando exec appserver -- cp ".env.example" ".env"
     lando exec appserver -- perl -i -pe "s|# DB_HOST='localhost'|DB_HOST='database'|g" ".env"
