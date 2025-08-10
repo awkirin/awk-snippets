@@ -123,9 +123,6 @@ RewriteRule . /index.php [L]
 EOL
 
     # install plugins
-    lando composer require jgrossi/corcel
-    lando composer require illuminate/auth
-
     lando composer require \
         wpackagist-plugin/wp-rocket \
         wpackagist-plugin/advanced-custom-fields-pro \
@@ -139,9 +136,10 @@ fi
 if [[ ! -d "${THEME_DIR}" ]]; then
 
     lando composer create-project roots/sage "${THEME_DIR}"
-
     echo "APP_URL='https://${APP_NAME}.lndo.site'" > "${THEME_DIR}/.env"
 
+    lando composer require jgrossi/corcel -d "${THEME_DIR}"
+    lando composer require illuminate/auth -d "${THEME_DIR}"
 
     lando yarn --cwd "${THEME_DIR}" install
     lando yarn --cwd "${THEME_DIR}" build
