@@ -27,6 +27,7 @@ config:
   php: "8.2"
   composer_version: "2.8.10"
   via: nginx
+  xdebug: false
 services:
   appserver:
     scanner: false
@@ -43,6 +44,8 @@ services:
     healthcheck: false
   pma:
     type: phpmyadmin
+    scanner: false
+    healthcheck: false
 
 tooling:
   yarn:
