@@ -79,7 +79,7 @@ if [[ ! -f "composer.json" ]]; then
 
     # extend env.example
     lando exec appserver -- echo "" >> ".env.example"
-    lando exec appserver -- echo "DISABLE_WP_CRON=true" >> ".env.example"
+    lando exec appserver -- echo "DISABLE_WP_CRON='true'" >> ".env.example"
 
     lando exec appserver -- echo "" >> ".env.example"
     lando exec appserver -- echo "MAIL_HOST=''" >> ".env.example"
