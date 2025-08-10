@@ -1,14 +1,14 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/lando/bedrock-init.sh)"
+#   APP_NAME=app /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/lando/scripts/bedrock-init.sh)"
 #
 # repo: https://github.com/awkirin/awk-scripts
 
 set -euo pipefail
 
 
-APP_NAME="${APP_NAME:-awkirin}"
+APP_NAME="${APP_NAME:-app}"
 
 THEME_DIR_NAME="${THEME_DIR_NAME:-sage}"
 THEME_DIR="${THEME_DIR:-web/app/themes/sage}"
@@ -59,7 +59,6 @@ proxy:
   node:
     - "localhost:5173"
 
-
 EOL
 
     lando rebuild -y
@@ -69,6 +68,57 @@ if [[ ! -f "composer.json" ]]; then
 
     lando composer create-project roots/bedrock /tmp/bedrock
     lando exec appserver -- bash -c 'cp -a /tmp/bedrock/. . && rm -rf /tmp/bedrock'
+
+    composer remove wpackagist-theme/twentytwentyfive
+
+    composer require jgrossi/corcel
+    composer require illuminate/auth
+
+    composer require \
+        wpackagist-plugin/wp-rocket \
+        wpackagist-plugin/advanced-custom-fields-pro \
+        wpackagist-plugin/acf-extended-pro \
+        wpackagist-plugin/ar-contactus \
+        wpackagist-plugin/wordpress-seo \
+        wpackagist-plugin/wordpress-seo-premium
+
+
+
+
+    lando wp package install aaemnnosttv/wp-cli-dotenv-command:^2.0 || true
+    lando wp dotenv init --template=.env.example --with-salts || true
+    lando wp dotenv set DB_HOST 'database' || true
+    lando wp dotenv set DB_NAME 'wordpress' || true
+    lando wp dotenv set DB_USER 'wordpress' || true
+    lando wp dotenv set DB_PASSWORD 'wordpress' || true
+    lando wp dotenv set DB_PREFIX 'wp_' || true
+    lando wp dotenv set WP_HOME '' || true
+
+    lando wp dotenv set MAIL_HOST '' || true
+    lando wp dotenv set MAIL_PORT '' || true
+    lando wp dotenv set MAIL_USERNAME '' || true
+    lando wp dotenv set MAIL_PASSWORD '' || true
+    lando wp dotenv set MAIL_FROM_ADDRESS '' || true
+    lando wp dotenv set MAIL_FROM_NAME '' || true
+    lando wp dotenv set MAIL_ENCRYPTION '' || true
+
+
+
+
+
+
+
+#     lando exec appserver -- cp ".env.example" ".env"
+#     lando exec appserver -- perl -i -pe "s|DB_NAME='database_name'|DB_NAME='wordpress'|g" ".env"
+#     lando exec appserver -- perl -i -pe "s|DB_USER='database_user'|DB_USER='wordpress'|g" ".env"
+#     lando exec appserver -- perl -i -pe "s|DB_PASSWORD='database_password'|DB_PASSWORD='wordpress'|g" ".env"
+#     lando exec appserver -- perl -i -pe "s|# DB_HOST='localhost'|DB_HOST='database'|g" ".env"
+#     lando exec appserver -- perl -i -pe "s|# DB_PREFIX='wp_'|DB_PREFIX='wp_'|g" ".env"
+#     lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME='https://${APP_NAME}.lndo.site'|g" ".env"
+
+
+
+
 
 
     cat > ".htaccess" <<'EOL'
@@ -94,26 +144,11 @@ EOL
 
 
 
-    composer remove wpackagist-theme/twentytwentyfive
 
-    composer require jgrossi/corcel
-    composer require illuminate/auth
 
-    composer require \
-        wpackagist-plugin/wp-rocket \
-        wpackagist-plugin/advanced-custom-fields-pro \
-        wpackagist-plugin/acf-extended-pro \
-        wpackagist-plugin/ar-contactus \
-        wpackagist-plugin/wordpress-seo \
-        wpackagist-plugin/wordpress-seo-premium
 
-    lando exec appserver -- cp ".env.example" ".env"
-    lando exec appserver -- perl -i -pe "s|DB_NAME='database_name'|DB_NAME='wordpress'|g" ".env"
-    lando exec appserver -- perl -i -pe "s|DB_USER='database_user'|DB_USER='wordpress'|g" ".env"
-    lando exec appserver -- perl -i -pe "s|DB_PASSWORD='database_password'|DB_PASSWORD='wordpress'|g" ".env"
-    lando exec appserver -- perl -i -pe "s|# DB_HOST='localhost'|DB_HOST='database'|g" ".env"
-#     lando exec appserver -- perl -i -pe "s|# DB_PREFIX='wp_'|DB_PREFIX='wp_'|g" ".env"
-    lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME='https://${APP_NAME}.lndo.site'|g" ".env"
+
+
 
     lando wp core install --url="${APP_NAME}.lndo.site" --title="${APP_NAME}" --admin_user="${ADMIN_USER}" --admin_password="${ADMIN_PASSWORD}" --admin_email="${ADMIN_EMAIL}"
 fi
