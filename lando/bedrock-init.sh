@@ -69,8 +69,8 @@ if [[ ! -f "composer.json" ]]; then
     lando exec appserver -- perl -i -pe "s|DB_USER='database_user'|DB_USER='wordpress'|g" ".env"
     lando exec appserver -- perl -i -pe "s|DB_PASSWORD='database_password'|DB_PASSWORD='wordpress'|g" ".env"
     lando exec appserver -- perl -i -pe "s|# DB_HOST='localhost'|DB_HOST='database'|g" ".env"
-#     lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME='https://${APP_NAME}.lndo.site'|g" ".env"
-    lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME=''|g" ".env"
+    lando exec appserver -- perl -i -pe "s|WP_HOME='http://example.com'|WP_HOME='https://${APP_NAME}.lndo.site'|g" ".env"
+
 
     composer remove wpackagist-theme/twentytwentyfive
 
