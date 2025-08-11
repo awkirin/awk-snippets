@@ -37,17 +37,22 @@ EOL
 cat > ".idea/deployment.xml" <<'EOL'
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="awkirin.ru" deleteMissingItems="true" createEmptyFolders="true" exclude=".idea;.svn;.cvs;.gitignore;.gitkeep;.DS_Store;.git;.hg;*.hprof;*.pyc;*.log;.env;.env.example;.lando.yml;README.md;LICENSE.md;cache;wp;vite.config.js;yarn.lock;node_modules;.editorconfig;pint.json;vendor;" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" serverName="awkirin.ru" deleteMissingItems="true" createEmptyFolders="true" exclude=".idea;.svn;.cvs;.gitignore;.gitkeep;.DS_Store;.git;.hg;*.hprof;*.pyc;*.log;.env;.env.example;.lando.yml;README.md;LICENSE.md;cache;vite.config.js;yarn.lock;node_modules;.editorconfig;pint.json;vendor;" autoUploadExternalChanges="true">
     <serverData>
       <paths name="awkirin.ru">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="/web/app/languages" />
+            <excludedPath path="/web/app/upgrade" />
+            <excludedPath path="/web/wp" />
+            <excludedPath path="/web/app/themes/sage/public/hot" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
-    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
   </component>
 </project>
 EOL
