@@ -17,6 +17,41 @@ ADMIN_USER="${ADMIN_USER:-admin}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-admin}"
 ADMIN_EMAIL="${ADMIN_EMAIL:-test@test.ru}"
 
+cat > "scripts/composer-update.sh" <<'EOL'
+#!/bin/bash
+set -euo pipefail
+
+export PATH="$HOME/bin:$PATH"
+
+BEDROCK_DIR="${BEDROCK_DIR:-"${PWD}"}"
+SAGE_DIR="${SAGE_DIR:-"${BEDROCK_DIR}/web/app/themes/sage"}"
+
+# prod
+composer update -d "${BEDROCK_DIR}" --no-dev --optimize-autoloader --classmap-authoritative --no-interaction
+composer update -d "${SAGE_DIR}" --no-dev --optimize-autoloader --classmap-authoritative --no-interaction
+
+EOL
+
+
+
+cat > ".idea/deployment.xml" <<'EOL'
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="awkirin.ru" deleteMissingItems="true" createEmptyFolders="true" exclude=".idea;.svn;.cvs;.gitignore;.gitkeep;.DS_Store;.git;.hg;*.hprof;*.pyc;*.log;.env;.env.example;.lando.yml;README.md;LICENSE.md;cache;wp;vite.config.js;yarn.lock;node_modules;.editorconfig;pint.json;vendor;" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="awkirin.ru">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
+  </component>
+</project>
+EOL
+
 
 if [[ ! -f ".lando.yml" ]]; then
 
