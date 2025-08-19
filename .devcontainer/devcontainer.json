@@ -1,7 +1,7 @@
 // Default Ubuntu-based DevContainer Template.
 // For more customization options, see https://containers.dev/implementors/json_reference
 {
-  "name": "Default",
+  "name": "awk-snippets",
   "image": "ubuntu:latest",
 
   "postCreateCommand": "apt-get update && apt-get install -y ca-certificates",
@@ -23,7 +23,7 @@
   "features": {
     "ghcr.io/devcontainers/features/git" : {}
     // Add additional features to your project using auto-completion.
-  },
+  }
   // Comment out to connect as the root user.
-  "remoteUser": "ubuntu"
+  // "remoteUser": "ubuntu"
 }
