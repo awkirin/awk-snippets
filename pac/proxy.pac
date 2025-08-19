@@ -19,7 +19,7 @@ function FindProxyForURL(url, host) {
         '*.googlevideo.com',
         '*.facebook.com',
         '*.instagram.com',
-        '*.jetbra.*',
+        '*.jetbra.in',
         '*.jetbrains.com',
         '*.youtube.com',
         '*.ggpht.com',
