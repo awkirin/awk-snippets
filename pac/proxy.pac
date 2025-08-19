@@ -16,14 +16,17 @@ function FindProxyForURL(url, host) {
         '*.hashicorp.com',
         '*.vagrantcloud.com',
         '*.amazonaws.com',
-        '*.googlevideo.com',
         '*.facebook.com',
         '*.instagram.com',
+
         '*.jetbra.in',
         '*.jetbrains.com',
+
         '*.youtube.com',
         '*.ggpht.com',
         '*.ytimg.com',
+		'*.googlevideo.com',
+
         //'*.torproject.org',
         '*.io',
         '*.tv',
