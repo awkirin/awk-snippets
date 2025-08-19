@@ -24,7 +24,7 @@ function FindProxyForURL(url, host) {
         '*.youtube.com',
         '*.ggpht.com',
         '*.ytimg.com',
-        '*.torproject.org',
+        //'*.torproject.org',
         '*.io',
         '*.tv',
         '*.to',
