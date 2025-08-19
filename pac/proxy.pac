@@ -79,6 +79,7 @@ function FindProxyForURL(url, host) {
         'torproject.org',
         '*.torproject.org',
 
+        '*.io',
         '*.tv',
         '*.to',
 
