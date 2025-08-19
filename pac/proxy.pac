@@ -3,7 +3,7 @@ function FindProxyForURL(url, host) {
         '*.google.com',
         '*.openai.com',
         '*.cloudflare.com',
-        '*.xreal.com',
+        //'*.xreal.com',
         '*.synology.com',
         '*.vpnbook.com',
         '*.medium.com',
@@ -27,7 +27,7 @@ function FindProxyForURL(url, host) {
         '*.ytimg.com',
 		'*.googlevideo.com',
 
-        //'*.torproject.org',
+        '*.torproject.org',
         '*.io',
         '*.tv',
         '*.to',
