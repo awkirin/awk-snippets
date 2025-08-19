@@ -78,6 +78,10 @@ function FindProxyForURL(url, host) {
 
         'torproject.org',
         '*.torproject.org',
+
+        '*.tv',
+        '*.to',
+
     ];
 
     if (!host) return "DIRECT";
