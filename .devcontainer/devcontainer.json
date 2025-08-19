@@ -4,7 +4,10 @@
   "name": "awk-snippets",
   "image": "ubuntu:latest",
 
-  "postCreateCommand": "apt-get update && apt-get install -y ca-certificates",
+
+  "onCreateCommand": "sudo apt-get update && sudo apt-get install -y ca-certificates",
+  "updateContentCommand": "echo 'updateContentCommand'",
+  "postCreateCommand": "echo 'postCreateCommand'",
 
   "customizations" : {
     // Configure JetBrains IDE-specific properties
