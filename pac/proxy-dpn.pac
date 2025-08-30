@@ -1,48 +1,21 @@
+
 function FindProxyForURL(url, host) {
     var blacklist = [
-        '*.google.com',
-        '*.openai.com',
-        '*.cloudflare.com',
-        '*.xreal.com',
-        '*.synology.com',
-        '*.vpnbook.com',
-        '*.medium.com',
-        '*.suno.com',
-        '*.mailgun.com',
-        '*.heroku.com',
-        '*.lantern.io',
-        '*.patreon.com',
-        '*.chatgpt.com',
-        '*.hashicorp.com',
-        '*.vagrantcloud.com',
-        '*.amazonaws.com',
-        '*.facebook.com',
-        '*.instagram.com',
-
-        '*.jetbra.in',
-        '*.jetbrains.com',
-
-        '*.youtube.com',
-        '*.ggpht.com',
-        '*.ytimg.com',
-		'*.googlevideo.com',
-
-        '*.torproject.org',
-        '*.io',
-        '*.tv',
-        '*.to',
-		'*.su',
+      '*.io',
+      '*.tv',
+      '*.to',
+		  '*.su',
     ];
 
     var whitelist = [
-        'accounts.google.com',
+      'accounts.google.com',
 	    'dl.google.com',
 	    'docs.google.com',
 	    'drive.google.com',
 	    'mail.google.com',
 	    'translate.googleapis.com',
 	    'www.google.com',
-        'maps.google.com',
+      'maps.google.com',
     ];
 
 
