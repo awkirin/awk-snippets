@@ -3,6 +3,7 @@ export PATH="$PATH:/usr/local/bin"
 
 export PATH="$PATH:${HOME}/bin"
 
+
 if [ -f .lando.yml ]; then
     alias php="lando php"
     alias composer="lando composer"
