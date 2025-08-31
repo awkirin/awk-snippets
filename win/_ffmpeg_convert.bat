@@ -1,8 +1,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "input_dir=."       & rem Папка с исходными файлами
-set "output_dir=output" & rem Подпапка для результатов
+set "input_dir=./input"       & rem Папка с исходными файлами
+set "output_dir=./output" & rem Подпапка для результатов
 set "crf=28"            & rem Уровень сжатия (18-30, меньше=качественнее)
 set "max_size=1280"     & rem 1280 Максимальный размер по ширине/высоте
 
