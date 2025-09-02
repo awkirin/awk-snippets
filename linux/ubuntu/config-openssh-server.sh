@@ -1,9 +1,7 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   sudo apt-get -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/install-openssh-server.sh)"
-#
-# repo: https://github.com/awkirin/awk-snippets
+#   sudo apt-get -y update && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/linux/ubuntu/config-openssh-server.sh)"
 
 set -euo pipefail
 
