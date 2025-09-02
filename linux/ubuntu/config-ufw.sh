@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/HEAD/bin/config-ufw.sh)"
+#   sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/linux/ubuntu/config-ufw.sh)"
 #
 # repo: https://github.com/awkirin/awk-snippets
 
