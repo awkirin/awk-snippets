@@ -1,5 +1,5 @@
 #!/bin/bash
-# source <(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/osx/all.sh)
+# source <(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/.zprofile)
 
 
 # Added by Toolbox App
