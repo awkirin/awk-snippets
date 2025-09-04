@@ -40,6 +40,22 @@ awk-dns-clear(){
   lookupd -flushcache
 }
 
+awk-brew-update(){
+    brew update
+    brew outdated
+    brew upgrade
+}
+
+awk-bins-update(){
+  mkdir -p ~/bin && curl -L https://github.com/awkirin/awk-laravel-zero/releases/download/latest/awk-helper -o ~/bin/awk-helper && chmod +x ~/bin/awk-helper
+}
+
+awk-update-all(){
+  awk-osx-clear
+  awk-dns-clear
+  awk-brew-update
+  awk-bins-update
+}
 
 
 
