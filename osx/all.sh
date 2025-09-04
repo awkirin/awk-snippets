@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-scripts/main/osx/clear.sh)"
+#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/osx/all.sh)"
 
 
 awk-osx-clear() {
