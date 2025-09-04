@@ -3,8 +3,6 @@
 # This script should be run via curl:
 #   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/osx/all.sh)"
 
-echo 'ok';
-
 # Added by Toolbox App
 export PATH="$PATH:/usr/local/bin"
 
