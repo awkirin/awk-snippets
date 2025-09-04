@@ -1,7 +1,6 @@
 #!/bin/bash
-#
-# This script should be run via curl:
-#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/osx/all.sh)"
+# source <(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/osx/all.sh)
+
 
 # Added by Toolbox App
 export PATH="$PATH:/usr/local/bin"
