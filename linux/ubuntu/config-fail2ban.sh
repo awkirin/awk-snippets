@@ -10,11 +10,9 @@ sudo tee /etc/fail2ban/jail.d/1000-awkirin.conf > /dev/null <<EOF
 enabled   = true
 port      = ssh
 logpath   = %(sshd_log)s
-backend   = systemd
 maxretry  = 3
 bantime   = 60m
 findtime  = 10m
 EOF
-
 
 sudo systemctl restart fail2ban
