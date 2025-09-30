@@ -42,7 +42,7 @@ function FindProxyForURL(url, host) {
 
     for (var i = 0; i < blacklist.length; i++) {
         if (shExpMatch(hostOnly, blacklist[i])) {
-            return "SOCKS5 localhost:9050; SOCKS5 localhost:9150; DIRECT";
+            return "SOCKS5 localhost:9150; DIRECT";
         }
     }
 
