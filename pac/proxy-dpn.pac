@@ -9,6 +9,7 @@ function FindProxyForURL(url, host) {
 	];
 	
 	var whitelist = [
+		'*.babia.to',
 		'accounts.google.com',
 		'dl.google.com',
 		'docs.google.com',
