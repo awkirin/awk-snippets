@@ -1,23 +1,23 @@
 
 function FindProxyForURL(url, host) {
-    var blacklist = [
-    	'*.io',
-    	'*.tv',
-    	'*.to',
+	var blacklist = [
+		'*.io',
+		'*.tv',
+		'*.to',
 		'*.su',
-    	'*.cfglobalcdn.com',
-    ];
-
-    var whitelist = [
-    	'accounts.google.com',
+		'*.cfglobalcdn.com',
+	];
+	
+	var whitelist = [
+		'accounts.google.com',
 		'dl.google.com',
-	    'docs.google.com',
-	    'drive.google.com',
-	    'mail.google.com',
-	    'translate.googleapis.com',
-	    'www.google.com',
-    	'maps.google.com',
-    ];
+		'docs.google.com',
+		'drive.google.com',
+		'mail.google.com',
+		'translate.googleapis.com',
+		'www.google.com',
+		'maps.google.com',
+	];
 
 
 
