@@ -6,6 +6,10 @@ function FindProxyForURL(url, host) {
 		'*.to',
 		'*.su',
 		'*.cfglobalcdn.com',
+
+		'*.youtube.com',
+		'*.googlevideo.com',
+		'*.ytimg.com',
 	];
 	
 	var whitelist = [
