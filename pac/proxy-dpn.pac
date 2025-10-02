@@ -8,6 +8,8 @@ function FindProxyForURL(url, host) {
 		'*.cfglobalcdn.com',
 		'*.cloudflare.com',
 
+		'*.mattermost.com',
+
 		'*.youtube.com',
 		'*.googlevideo.com',
 		'*.ytimg.com',
