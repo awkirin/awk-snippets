@@ -17,6 +17,9 @@ function FindProxyForURL(url, host) {
 		'*.babia.to',
 		'babia.to',
 
+		'*.roots.io',
+		'roots.io',
+
 		'*.docker.io',
 		'*.gofile.io',
 		'accounts.google.com',
