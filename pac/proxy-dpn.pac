@@ -9,6 +9,7 @@ function FindProxyForURL(url, host) {
 		'*.cloudflare.com',
 
 		'*.mattermost.com',
+		'mattermost.com',
 
 		'*.youtube.com',
 		'*.googlevideo.com',
