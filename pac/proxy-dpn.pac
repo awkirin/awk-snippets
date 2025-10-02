@@ -14,6 +14,8 @@ function FindProxyForURL(url, host) {
 	
 	var whitelist = [
 		'*.babia.to',
+		'babia.to',
+
 		'*.docker.io',
 		'*.gofile.io',
 		'accounts.google.com',
