@@ -6,6 +6,7 @@ function FindProxyForURL(url, host) {
 		'*.to',
 		'*.su',
 		'*.cfglobalcdn.com',
+		'*.cloudflare.com',
 
 		'*.youtube.com',
 		'*.googlevideo.com',
