@@ -13,9 +13,9 @@ function FindProxyForURL(url, host) {
 		'*.mattermost.com',
 		'mattermost.com',
 
-		'*.youtube.com',
-		'*.googlevideo.com',
-		'*.ytimg.com',
+		'*._youtube.com',
+		'*._googlevideo.com',
+		'*._ytimg.com',
 	];
 	
 	var whitelist = [
