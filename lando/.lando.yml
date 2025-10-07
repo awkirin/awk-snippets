@@ -1,0 +1,56 @@
+name: test
+
+recipe: wordpress
+config:
+  webroot: "bedrock/web"
+  php: "8.2"
+  composer_version: "2.8.10"
+  via: nginx
+  xdebug: false
+services:
+  appserver:
+    scanner: false
+    healthcheck: false
+    overrides:
+      volumes:
+        - ~/.composer/auth.json:/var/www/.composer/auth.json
+        - ~/.composer/config.json:/var/www/.composer/config.json
+        - ./sage/:/app/bedrock/web/app/themes/sage/
+        - ./plugin/:/app/bedrock/web/app/mu-plugins/application/
+  appserver_nginx:
+    scanner: false
+    healthcheck: false
+  database:
+    scanner: false
+    healthcheck: false
+    overrides:
+      volumes:
+        - ./.lando/db.sql:/docker-entrypoint-initdb.d/db.sql
+  node:
+    type: node:22
+    scanner: false
+    healthcheck: false
+    port: 5173
+    ports:
+      - "5173:5173"
+    portforward: 5173
+    overrides:
+      ports:
+        - "5173:5173"
+      volumes:
+        - ./sage/:/app/bedrock/web/app/themes/sage/
+
+  pma:
+    type: phpmyadmin
+    scanner: false
+    healthcheck: false
+
+tooling:
+  yarn:
+    service: node
+
+proxy:
+  pma:
+    - "pma.lndo.site"
+#  node:
+#    - "node.lndo.site:3000"
