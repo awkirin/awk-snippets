@@ -19,6 +19,10 @@ function FindProxyForURL(url, host) {
 	];
 	
 	var whitelist = [
+
+        'roots.io',
+        '*.roots.io',
+
 		'*.babia.to',
 		'babia.to',
 
