@@ -25,7 +25,7 @@ services:
     healthcheck: false
     overrides:
       volumes:
-        - ./.lando/db.sql:/docker-entrypoint-initdb.d/db.sql
+        - ./lando/db.sql:/docker-entrypoint-initdb.d/db.sql
   node:
     type: node:22
     scanner: false
@@ -52,5 +52,14 @@ tooling:
 proxy:
   pma:
     - "pma.lndo.site"
-#  node:
-#    - "node.lndo.site:3000"
+
+events:
+  post-rebuild:
+    - appserver: |
+        composer install -d bedrock
+        composer install -d sage
+    - node: |
+        cd sage
+        yarn install 
+        yarn build
+        yarn dev
