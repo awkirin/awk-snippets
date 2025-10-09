@@ -10,8 +10,8 @@ set -euo pipefail
 
 sudo apt-get -y install xrdp xfce4 xfce4-goodies
 
-if [[ ! -f "/etc/xrdp/xrdp.ini.original" ]]; then
-    sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.original
+if [[ ! -f "/etc/xrdp/xrdp.ini.bak" ]]; then
+    sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
 fi
 
 sudo sed -i 's/3389/3390/g' /etc/xrdp/xrdp.ini
