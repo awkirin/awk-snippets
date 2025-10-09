@@ -8,7 +8,9 @@
 set -euo pipefail
 
 
-sudo apt-get -y install xrdp xfce4 xfce4-goodies
+sudo apt-get -y install xrdp xfce4 xfce4-goodies dbus-x11
+
+dbus-launch
 
 if [[ ! -f "/etc/xrdp/xrdp.ini.bak" ]]; then
     sudo cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.bak
@@ -22,4 +24,6 @@ echo xfce4-session > ~/.xsession
 sudo sed -i 's|^test -x /etc/X11/Xsession && exec /etc/X11/Xsession|# &|' /etc/xrdp/startwm.sh
 sudo sed -i 's|^exec /bin/sh /etc/X11/Xsession|# &|' /etc/xrdp/startwm.sh
 
-sudo /etc/init.d/xrdp start
+sudo systemctl enable xrdp
+sudo systemctl restart xrdp
+sudo systemctl status xrdp
