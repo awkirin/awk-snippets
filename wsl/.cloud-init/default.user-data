@@ -9,7 +9,7 @@
 #      uri: http://security.ubuntu.com/ubuntu
 
 package_update: true
-#package_upgrade: true
+package_upgrade: true
 packages:
   - curl
   - wget
