@@ -9,7 +9,7 @@
 #kernelModules =
 
 # default: 50%
-memory = 16GB
+# memory = 16GB
 
 #processors =
 
@@ -59,7 +59,7 @@ dnsProxy = false
 #autoProxy = false
 
 # default: 1TB
-defaultVhdSize = 100GB
+#defaultVhdSize = 100GB
 
 
 #[experimental]
