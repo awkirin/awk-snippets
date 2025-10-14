@@ -14,10 +14,10 @@ set -o pipefail
 apt install jq -y
 
 TBA_JSON=$(curl -s 'https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release&fields=downloads')
-TBA_JSON=$(echo "$TBA_JSON" | tr -d '[:cntrl:]')
-TBA_BUILD=$(jq -r '.TBA[0].build' <<< "$TBA_JSON")
-TBA_LINK=$(jq -r '.TBA[0].downloads.linux.link' <<< "$TBA_JSON")
-TBA_FILENAME=$(basename "$TBA_LINK")
+TBA_JSON=$(echo "${TBA_JSON}" | tr -d '[:cntrl:]')
+TBA_BUILD=$(jq -r '.TBA[0].build' <<< "${TBA_JSON}")
+TBA_LINK=$(jq -r '.TBA[0].downloads.linux.link' <<< "${TBA_JSON}")
+TBA_FILENAME=$(basename "${TBA_LINK}")
 
 echo "build $TBA_BUILD"
 echo "link $TBA_LINK"
