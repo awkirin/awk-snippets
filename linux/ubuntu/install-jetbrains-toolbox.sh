@@ -8,10 +8,31 @@
 # прямая ссылка на скачивание
 # https://data.services.jetbrains.com/products/download?platform=linux&code=TBA
 
-
-
 set -e
 set -o pipefail
+
+apt install jq -y
+
+TBA_JSON=$(curl -s 'https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release&fields=downloads')
+TBA_JSON=$(echo "$TBA_JSON" | tr -d '\000-\031')
+TBA_BUILD=$(echo "${TBA_JSON}" | jq -r '.TBA[0].build')
+TBA_LINK=$(echo "${TBA_JSON}" | jq -r '.TBA[0].downloads.linux.link')
+TBA_FILENAME=$(basename "$TBA_LINK")
+
+echo "build $TBA_BUILD"
+echo "link $TBA_LINK"
+echo "filename $TBA_FILENAME"
+
+
+
+
+
+
+
+
+
+
+
 
 TMP_DIR="/tmp"
 INSTALL_DIR="$HOME/.local/share/JetBrains/Toolbox/bin"
