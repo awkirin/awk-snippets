@@ -11,7 +11,7 @@
 
 set -euo pipefail
 
-apt install libfuse2 -y
+#apt install libfuse2 -y
 
 TBA_LOCAL_BIN="${HOME}/.local/bin"
 TBA_TMP_DIR="/tmp/jetbrains/tba"
