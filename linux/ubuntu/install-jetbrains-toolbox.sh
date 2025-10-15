@@ -8,62 +8,40 @@
 # прямая ссылка на скачивание
 # https://data.services.jetbrains.com/products/download?platform=linux&code=TBA
 
-set -e
-set -o pipefail
 
-apt install jq -y
+set -euo pipefail
 
-TBA_JSON=$(curl -s 'https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release&fields=downloads')
-TBA_JSON=$(echo "${TBA_JSON}" | tr -d '[:cntrl:]')
-TBA_BUILD=$(jq -r '.TBA[0].build' <<< "${TBA_JSON}")
-TBA_LINK=$(jq -r '.TBA[0].downloads.linux.link' <<< "${TBA_JSON}")
-TBA_FILENAME=$(basename "${TBA_LINK}")
+apt install libfuse2 -y
 
-echo "build $TBA_BUILD"
-echo "link $TBA_LINK"
-echo "filename $TBA_FILENAME"
+TBA_LOCAL_BIN="${HOME}/.local/bin"
+TBA_TMP_DIR="/tmp/jetbrains/tba"
+TBA_INSTALL_DIR="${HOME}/.local/share/JetBrains/Toolbox/bin"
 
-
-
-
-
-
-
-
-
-
-
-
-TMP_DIR="/tmp"
-INSTALL_DIR="$HOME/.local/share/JetBrains/Toolbox/bin"
-SYMLINK_DIR="$HOME/.local/bin"
-
-echo "### INSTALL JETBRAINS TOOLBOX ###"
-
-echo -e "\e[94mFetching the URL of the latest version...\e[39m"
-ARCHIVE_URL=$(curl -s 'https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release' | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}'| sed 's/[", ]//g')
-ARCHIVE_FILENAME=$(basename "$ARCHIVE_URL")
-
-echo -e "\e[94mDownloading $ARCHIVE_FILENAME...\e[39m"
-rm "$TMP_DIR/$ARCHIVE_FILENAME" 2>/dev/null || true
-wget -q --show-progress -cO "$TMP_DIR/$ARCHIVE_FILENAME" "$ARCHIVE_URL"
-
-echo -e "\e[94mExtracting to $INSTALL_DIR...\e[39m"
-mkdir -p "$INSTALL_DIR"
-rm "$INSTALL_DIR/jetbrains-toolbox" 2>/dev/null || true
-tar -xzf "$TMP_DIR/$ARCHIVE_FILENAME" -C "$INSTALL_DIR" --strip-components=1
-rm "$TMP_DIR/$ARCHIVE_FILENAME"
-chmod +x "$INSTALL_DIR/jetbrains-toolbox"
-
-echo -e "\e[94mSymlinking to $SYMLINK_DIR/jetbrains-toolbox...\e[39m"
-mkdir -p $SYMLINK_DIR
-rm "$SYMLINK_DIR/jetbrains-toolbox" 2>/dev/null || true
-ln -s "$INSTALL_DIR/jetbrains-toolbox" "$SYMLINK_DIR/jetbrains-toolbox"
-
-if [ -z "$CI" ]; then
-	echo -e "\e[94mRunning for the first time to set-up...\e[39m"
-	( "$INSTALL_DIR/jetbrains-toolbox" & )
-	echo -e "\n\e[32mDone! JetBrains Toolbox should now be running, in your application list, and you can run it in terminal as jetbrains-toolbox (ensure that $SYMLINK_DIR is on your PATH)\e[39m\n"
-else
-	echo -e "\n\e[32mDone! Running in a CI -- skipped launching the AppImage.\e[39m\n"
+if [[ $EUID -eq 0 ]]; then
+    echo  "This script should not be run as root"
+    exit 1
 fi
+
+if [[ -d "${TBA_INSTALL_DIR}" ]]; then
+    echo "✅ JetBrains Toolbox уже установлен в: ${TBA_INSTALL_DIR}"
+    exit 0
+fi
+
+TBA_DATA=$(curl -s "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true")
+TBA_DATA_LINK=$(echo "${TBA_DATA}" | grep -oP '"linux":\s*{"link":"\K[^"]+')
+TBA_DATA_FILENAME=$(basename "${TBA_DATA_LINK}")
+
+echo "tba download"
+mkdir -p "${TBA_TMP_DIR}"
+wget -q --show-progress -cO "${TBA_TMP_DIR}/${TBA_DATA_FILENAME}" "${TBA_DATA_LINK}"
+
+echo "tba install"
+mkdir -p "${TBA_INSTALL_DIR}"
+tar -xzf "${TBA_TMP_DIR}/${TBA_DATA_FILENAME}" -C "${TBA_INSTALL_DIR}" --strip-components=2
+
+echo "tba bin"
+mkdir -p "${TBA_LOCAL_BIN}"
+ln -s "${TBA_INSTALL_DIR}/jetbrains-toolbox" "${TBA_LOCAL_BIN}/jetbrains-toolbox"
+
+echo "tba start"
+"${TBA_LOCAL_BIN}/jetbrains-toolbox"
