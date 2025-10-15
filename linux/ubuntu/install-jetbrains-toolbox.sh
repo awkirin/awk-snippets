@@ -42,6 +42,3 @@ tar -xzf "${TBA_TMP_DIR}/${TBA_DATA_FILENAME}" -C "${TBA_INSTALL_DIR}" --strip-c
 echo "tba bin"
 mkdir -p "${TBA_LOCAL_BIN}"
 ln -s "${TBA_INSTALL_DIR}/jetbrains-toolbox" "${TBA_LOCAL_BIN}/jetbrains-toolbox"
-
-echo "tba start"
-"${TBA_LOCAL_BIN}/jetbrains-toolbox"
