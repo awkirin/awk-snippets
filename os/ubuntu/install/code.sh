@@ -4,19 +4,22 @@
 
 set -eufo pipefail
 
-# Update system first
-sudo apt update
+# Install dependencies if missing
+if ! command -v wget >/dev/null 2>&1 || ! command -v gpg >/dev/null 2>&1; then
+    sudo apt update
+    sudo apt install wget gpg apt-transport-https -y
+fi
 
-# Install dependencies
-sudo apt install wget gpg apt-transport-https -y
+# Install Microsoft GPG key only if not present
+if [ ! -f "/usr/share/keyrings/microsoft.gpg" ]; then
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+  sudo install -D -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
+  rm -f microsoft.gpg
+fi
 
-# Install Microsoft GPG key
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-sudo install -D -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
-rm -f microsoft.gpg
-
-# Add repository
-# sudo tee "/etc/apt/sources.list.d/vscode.sources" > /dev/null <<EOF
+# Add repository only if not present
+if [ ! -f "/etc/apt/sources.list.d/vscode.sources" ]; then
+  sudo tee "/etc/apt/sources.list.d/vscode.sources" > /dev/null <<EOF
 Types: deb
 URIs: https://packages.microsoft.com/repos/code
 Suites: stable
@@ -24,8 +27,8 @@ Components: main
 Architectures: amd64,arm64,armhf
 Signed-By: /usr/share/keyrings/microsoft.gpg
 EOF
+fi
 
 # Install VS Code
-sudo apt install apt-transport-https -y
 sudo apt update
 sudo apt install code -y
