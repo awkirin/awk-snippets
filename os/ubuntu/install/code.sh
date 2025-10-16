@@ -27,8 +27,15 @@ Components: main
 Architectures: amd64,arm64,armhf
 Signed-By: /usr/share/keyrings/microsoft.gpg
 EOF
+  sudo apt update
 fi
 
-# Install VS Code
-sudo apt update
-sudo apt install code -y
+# Install VS Code if not installed
+if ! command -v code >/dev/null 2>&1; then
+    echo "Installing VS Code..."
+    sudo apt install code -y
+else
+    echo "VS Code is already installed"
+fi
+
+echo "VS Code setup completed"
