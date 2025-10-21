@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/linux/ubuntu/config-fail2ban.sh)"
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/refs/heads/main/os/ubuntu/config/config-fail2ban.sh)"
 
 set -euo pipefail
 
