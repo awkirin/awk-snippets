@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This script should be run via curl:
-# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/main/linux/ubuntu/config-openssh-server.sh)"
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/refs/heads/main/os/ubuntu/config/config-openssh-server.sh)"
 
 set -euo pipefail
 
