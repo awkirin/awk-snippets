@@ -10,21 +10,25 @@ create_folders() {
     local base_dir=$1
     local json_data=$2
     
-    echo "$json_data" | jq -r 'keys[]' | while read key; do
-        new_dir="$base_dir/$key"
-        mkdir -p "$new_dir"
-        echo "Created: $new_dir"
+    echo "$json_data" | jq -r 'to_entries[] | "\(.key)|\(.value[]?)"' | while IFS='|' read -r key subfolder; do
+        if [ -n "$key" ]; then
+            new_dir="$base_dir/$key"
+            mkdir -p "$new_dir"
+            echo "Created: $new_dir"
+        fi
         
-        # Получаем содержимое подпапок
-        subfolders=$(echo "$json_data" | jq -r ".$key[]")
-        if [ "$subfolders" != "null" ] && [ -n "$subfolders" ]; then
-            echo "$subfolders" | while read subfolder; do
-                mkdir -p "$new_dir/$subfolder"
-                echo "Created: $new_dir/$subfolder"
-            done
+        if [ -n "$subfolder" ] && [ "$subfolder" != "null" ]; then
+            mkdir -p "$new_dir/$subfolder"
+            echo "Created: $new_dir/$subfolder"
         fi
     done
 }
 
-json_data=$(cat structure.json)
-create_folders "." "$json_data"
+# Чтение JSON и создание структуры
+if [ -f "structure.json" ]; then
+    json_data=$(cat structure.json)
+    create_folders "." "$json_data"
+else
+    echo "Error: structure.json not found"
+    exit 1
+fi
