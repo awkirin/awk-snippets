@@ -14,6 +14,11 @@ Header always set Content-Security-Policy "frame-ancestors 'self'"
 Header always set X-XSS-Protection "1; mode=block"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
 
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|lock|env|gitignore|md|sql|tpl|twig|blade\.php)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
 Order Allow,Deny
 Allow from all
 
