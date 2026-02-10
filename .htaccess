@@ -21,14 +21,18 @@ SetEnvIfNoCase User-Agent "semrushbot" bad_bot
 SetEnvIfNoCase User-Agent "keys-so-bot" bad_bot
 SetEnvIfNoCase User-Agent "wpbot" bad_bot
 SetEnvIfNoCase User-Agent "dataforseo" bad_bot
+SetEnvIfNoCase User-Agent "barkrowler" bad_bot
+SetEnvIfNoCase User-Agent "seekport" bad_bot
+SetEnvIfNoCase User-Agent "backlinks" bad_bot
+SetEnvIfNoCase User-Agent "gigaexplorator" bad_bot
+SetEnvIfNoCase User-Agent "terracotta" bad_bot
 
 # 5. ЛЕГИТИМНЫЕ БОТЫ
 SetEnvIfNoCase User-Agent "bytespider" bad_bot
 SetEnvIfNoCase User-Agent "petalbot" bad_bot
 SetEnvIfNoCase User-Agent "baidu" bad_bot
-
+SetEnvIfNoCase User-Agent "oai-searchbot" bad_bot
 #SetEnvIfNoCase User-Agent "meta-externalagent" bad_bot
-#SetEnvIfNoCase User-Agent "oai-searchbot" bad_bot
 #SetEnvIfNoCase User-Agent "gptbot" bad_bot
 #SetEnvIfNoCase User-Agent "amazonbot" bad_bot
 #SetEnvIfNoCase User-Agent "twitterbot" bad_bot
