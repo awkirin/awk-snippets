@@ -44,7 +44,7 @@ Header always set Referrer-Policy "strict-origin-when-cross-origin"
     </FilesMatch>
 </IfModule>
 
-<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|lock|env|gitignore|md|sql|tpl|twig|blade\.php|conf)$">
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|lock|env|gitignore|md|sql|tpl|twig|blade\.php|conf|bat|ps)$">
 Order Allow,Deny
 Deny from all
 </FilesMatch>
