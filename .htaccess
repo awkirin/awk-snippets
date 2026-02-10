@@ -43,5 +43,4 @@ Deny from env=bad_bot
 
 # wp scan
 Deny from 20.62.114.0
-
 # /blocks
