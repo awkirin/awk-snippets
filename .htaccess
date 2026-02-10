@@ -13,9 +13,6 @@ Header always set X-Frame-Options "SAMEORIGIN"
 Header always set Content-Security-Policy "frame-ancestors 'self'"
 Header always set X-XSS-Protection "1; mode=block"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
-Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-Header always set Strict-Transport-Security "max-age=31536000"
-Header always set Cache-Control "no-store, no-cache, must-revalidate"
 
 Order Allow,Deny
 Allow from all
