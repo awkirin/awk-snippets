@@ -1,12 +1,18 @@
-# block bad bots
-# https://github.com/awkirin/awk-snippets/blob/main/.htaccess
-
+# awk blocks https://github.com/awkirin/awk-snippets/blob/main/.htaccess
 Order Allow,Deny
 Allow from all
 
+# block bad bots
 SetEnvIfNoCase User-Agent "petalbot" bad_bot
 SetEnvIfNoCase User-Agent "trendictionbot" bad_bot
 SetEnvIfNoCase User-Agent "keys-so-bot" bad_bot
-
+SetEnvIfNoCase User-Agent "wpbot" bad_bot
+SetEnvIfNoCase User-Agent "semrushbot" bad_bot
+#SetEnvIfNoCase User-Agent "oai-searchbot" bad_bot
+#SetEnvIfNoCase User-Agent "gptbot" bad_bot
+#SetEnvIfNoCase User-Agent "amazonbot" bad_bot
 Deny from env=bad_bot
-# /block bad bots
+
+# wp scan
+Deny from 20.62.114.0
+# /awk blocks
