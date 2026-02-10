@@ -3,14 +3,14 @@ Order Allow,Deny
 Allow from all
 
 # 1. ПУСТЫЕ USER-AGENT
-SetEnvIf User-Agent "^$" bad_bot
-SetEnvIf User-Agent "^-?$" bad_bot
+#SetEnvIf User-Agent "^$" bad_bot
+#SetEnvIf User-Agent "^-?$" bad_bot
 
 # 2. ФЕЙКОВЫЕ Chrome (версии 90- и 130+)
-SetEnvIfNoCase User-Agent "chrome/([1-8][0-9]\.|90\.|1[3-9][0-9]\.|[2-9][0-9][0-9]\.)" bad_bot
+#SetEnvIfNoCase User-Agent "chrome/([1-8][0-9]\.|90\.|1[3-9][0-9]\.|[2-9][0-9][0-9]\.)" bad_bot
 
 # 3. УРЕЗАННЫЕ USER-AGENT
-SetEnvIfNoCase User-Agent "^mozilla/5\.0.*applewebkit/537\.36$" bad_bot
+#SetEnvIfNoCase User-Agent "^mozilla/5\.0.*applewebkit/537\.36$" bad_bot
 
 # 4. ВРЕДОНОСНЫЕ/АГРЕССИВНЫЕ БОТЫ
 SetEnvIfNoCase User-Agent "trendictionbot" bad_bot
