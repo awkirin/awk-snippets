@@ -1,4 +1,22 @@
 # blocks
+ServerSignature Off
+
+Header always unset Server
+Header always unset X-Generator
+Header always unset X-AspNet-Version
+Header always unset X-AspNetMvc-Version
+Header always unset X-Runtime
+Header always unset X-Version
+Header always unset X-Powered-By
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Content-Security-Policy "frame-ancestors 'self'"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+Header always set Strict-Transport-Security "max-age=31536000"
+Header always set Cache-Control "no-store, no-cache, must-revalidate"
+
 Order Allow,Deny
 Allow from all
 
