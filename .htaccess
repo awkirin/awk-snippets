@@ -1,4 +1,4 @@
-# awk blocks https://github.com/awkirin/awk-snippets/blob/main/.htaccess
+# blocks
 Order Allow,Deny
 Allow from all
 
@@ -40,4 +40,4 @@ Deny from env=bad_bot
 # wp scan
 Deny from 20.62.114.0
 
-# /awk blocks
+# /blocks
