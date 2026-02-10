@@ -82,7 +82,7 @@ SetEnvIfNoCase User-Agent "bytespider" bad_bot
 SetEnvIfNoCase User-Agent "petalbot" bad_bot
 SetEnvIfNoCase User-Agent "baidu" bad_bot
 SetEnvIfNoCase User-Agent "oai-searchbot" bad_bot
-#SetEnvIfNoCase User-Agent "meta-externalagent" bad_bot
+SetEnvIfNoCase User-Agent "meta-externalagent" bad_bot
 #SetEnvIfNoCase User-Agent "gptbot" bad_bot
 #SetEnvIfNoCase User-Agent "amazonbot" bad_bot
 #SetEnvIfNoCase User-Agent "twitterbot" bad_bot
