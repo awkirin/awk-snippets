@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/refs/heads/main/os/ubuntu/add_awkirin_keys.sh | sh
+
 # Имя пользователя и URL с ключами
 GITHUB_USER="awkirin"
 KEY_URL="https://github.com/${GITHUB_USER}.keys"
