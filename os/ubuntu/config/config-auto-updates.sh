@@ -1,3 +1,4 @@
+sudo apt update
 sudo apt install -y unattended-upgrades distro-info-data powermgmt-base
 
 sudo tee /etc/apt/apt.conf.d/1000awkirin-unattended-upgrades > /dev/null <<EOF
