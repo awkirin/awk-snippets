@@ -1,5 +1,5 @@
 @echo off
-set "output=%USERPROFILE%\_videos"
+set "output=%USERPROFILE%\Desctop\_videos"
 setlocal enabledelayedexpansion
 
 for /r %%i in (*.mp4) do (
@@ -7,7 +7,7 @@ for /r %%i in (*.mp4) do (
     set "filename=%%~nxi"
     set "relpath=!current:*\=!"
     if not exist "!output!\!relpath!" mkdir "!output!\!relpath!"
-    ffmpeg -i "%%i" -c:v h264_nvenc -rc vbr -cq 40 "!output!\!relpath!%%~ni.mp4"
+    ffmpeg -i "%%i" -c:v h264_nvenc -rc vbr -cq 34 "!output!\!relpath!%%~ni.mp4"
 )
 
 pause
