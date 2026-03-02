@@ -1,5 +1,5 @@
 @echo off
-set "output=%USERPROFILE%\Desctop\_videos"
+set "output=%USERPROFILE%\Desktop\_videos"
 setlocal enabledelayedexpansion
 
 for /r %%i in (*.mp4) do (
