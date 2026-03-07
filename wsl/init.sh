@@ -1,20 +1,45 @@
 #!/bin/bash
-sudo apt update -y && sudo apt upgrade -y
-#sudo apt full-upgrade -y
 
+function common(){
+    sudo apt update -y && sudo apt upgrade -y
+    sudo apt install -y git curl wget zsh age zip unzip gh htop jq nautilus build-essential ca-certificates net-tools openssh-client
+}
 
-sudo apt install -y git curl wget zsh age
+# wsl
+## wsl config
+sudo tee "/etc/wsl.conf" > /dev/null << 'EOF'
+[boot]
+systemd = true
 
-#sudo apt install -y nautilus
+[user]
+default = awkirin
 
-# ssh-agent win to wsl
+[interop]
+appendWindowsPath = false
+
+[automount]
+enabled = true
+root = /mnt
+options = "metadata,umask=22,fmask=11"
+#mountFsTab = true
+EOF
+
+## ssh-agent win to wsl
 WSL2_SSH_AGENT_PATH="/usr/local/bin/wsl2-ssh-agent"
 sudo curl -L -o "$WSL2_SSH_AGENT_PATH" https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
 sudo chmod 755 "$WSL2_SSH_AGENT_PATH"
 
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
+
+
+
+# ohmyzsh
+sudo apt install -y zsh
+if [ ! -d "$HOME/.oh-my-zsh" ]; then 
     RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
+
+
+
 
 tee "$HOME/.oh-my-zsh/custom/awkirin.zsh" > /dev/null << 'EOF'
 eval $(wsl2-ssh-agent)
