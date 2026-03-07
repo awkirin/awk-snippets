@@ -17,13 +17,6 @@ function log_info() {
     # Зеленый цвет для информации
     echo -e "\033[1;32m[INFO] [$timestamp]\033[0m $msg ================================================================="
 }
-
-
-#sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null <<EOF
-#Acquire::Retries "5";
-#EOF
-
-
 function add_apt_yandex_mirrors() {
   log_info "add apt yandex mirrors"
   sudo tee /etc/apt/sources.list.d/1000-yandex.list > /dev/null <<EOF
@@ -33,27 +26,34 @@ deb https://mirror.yandex.ru/ubuntu/ $(lsb_release -cs)-backports main restricte
 deb https://mirror.yandex.ru/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse
 EOF
 }
+function config_wsl() {
+  if [[ "$IS_WSL" -eq 1 ]]; then
+    log_info "wsl config"
+    sudo tee "/etc/wsl.conf" > /dev/null <<EOF
+[boot]
+systemd = true
 
-function install_common() {
-  log_info "common"
-  # add_apt_yandex_mirrors
-  sudo timedatectl set-timezone ${TZ}
-  sudo apt update -y && sudo apt upgrade -y #&& sudo apt full-upgrade -y
-  sudo apt install -y \
-  coreutils \
-  dnsutils \
-  curl \
-  wget \
-  zsh \
-  age \
-  zip \
-  unzip \
-  gh \
-  htop \
-  jq \
-  build-essential \
-  ca-certificates \
-  net-tools
+[user]
+default = ${USER_NAME}
+
+[interop]
+appendWindowsPath = false
+
+[automount]
+enabled = true
+root = /mnt
+options = "metadata,umask=22,fmask=11"
+#mountFsTab = true
+EOF
+  fi
+}
+function install_brew() {
+  if command -v brew >/dev/null 2>&1; then
+    return
+  fi
+  NONINTERACTIVE=1 sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  sudo apt install build-essential
+  brew install gcc
 }
 function install_sops(){
   log_info "sops"
@@ -71,13 +71,20 @@ function install_sops(){
   fi
 }
 function install_ohmyzsh() {
-  log_info "oh-my-zsh"
+  log_info "install oh-my-zsh"
   sudo apt install zsh -y
-  sudo -u ${USER_NAME} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  sudo chsh -s $(which zsh) ${USER_NAME}
+  sudo -u "${USER_NAME}" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  sudo chsh -s "$(which zsh)" "${USER_NAME}"
+
+  log_info "custom config oh-my-zsh"
+  sudo -u "${USER_NAME}" tee "$USER_HOME/.zshrc-custom" > /dev/null <<EOF
+plugins=(git brew ssh-agent)
+EOF
+  sudo -u "${USER_NAME}" sed -i '/^plugins=/c\source $HOME/.zshrc-custom' ~/.zshrc
 
   if [[ "$IS_WSL" -eq 1 ]]; then
-    sudo -u ${USER_NAME} tee "$USER_HOME/.oh-my-zsh/custom/wsl2-ssh-agent.zsh" > /dev/null <<EOF
+    log_info "wsl2-ssh-agent"
+    sudo -u "${USER_NAME}" tee "$USER_HOME/.oh-my-zsh/custom/wsl2-ssh-agent.zsh" > /dev/null <<EOF
 eval $(wsl2-ssh-agent)
 EOF
   fi
@@ -86,7 +93,7 @@ function install_docker() {
   if [[ "$IS_WSL" -eq 0 ]]; then
     log_info "docker"
     sudo sh -c "$(curl -fsSL get.docker.com)"
-    sudo usermod -aG docker ${USER_NAME}
+    sudo usermod -aG docker "${USER_NAME}"
     systemctl enable docker
     systemctl start docker
   fi
@@ -94,33 +101,39 @@ function install_docker() {
 function install_lando() {
   if [[ "$IS_WSL" -eq 0 ]]; then
     log_info "lando"
-    sudo -u ${USER_NAME} /bin/bash -c "$(curl -fsSL get.lando.dev/setup-lando.sh) --yes"
+    sudo -u "${USER_NAME}" /bin/bash -c "$(curl -fsSL get.lando.dev/setup-lando.sh) --yes"
   fi
 }
 function install_google_chrome() {
-  log_info "google chrome"
-  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-  sudo apt update -y
-  sudo apt install -y google-chrome-stable
+  if [[ "$IS_WSL" -eq 0 ]]; then
+    log_info "google chrome"
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+    sudo apt update -y
+    sudo apt install -y google-chrome-stable
+  fi
 }
 function install_keepassxc() {
-  log_info "keepass-xc"
-  sudo add-apt-repository -y ppa:phoerious/keepassxc
-  sudo apt update -y
-  sudo apt install -y keepassxc
+  if [[ "$IS_WSL" -eq 0 ]]; then
+    log_info "keepass-xc"
+    sudo add-apt-repository -y ppa:phoerious/keepassxc
+    sudo apt update -y
+    sudo apt install -y keepassxc
+  fi
 }
 function install_vagrant() {
-  log_info "vagrant"
-  wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-  sudo apt update
-  sudo apt install vagrant
+  if [[ "$IS_WSL" -eq 0 ]]; then
+    log_info "vagrant"
+    wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt update
+    sudo apt install vagrant
+  fi
 }
 function install_git() {
   log_info "git"
   sudo apt install git -y
-  sudo -u ${USER_NAME} tee ${USER_HOME}/.gitconfig > /dev/null <<EOF
+  sudo -u "${USER_NAME}" tee "${USER_HOME}"/.gitconfig > /dev/null <<EOF
 [user]
   name = ${USER_NAME}
   email = ${USER_EMAIL}
@@ -157,27 +170,6 @@ function install_openssh_client() {
     fi
   fi
 }
-function config_wsl() {
-  if [[ "$IS_WSL" -eq 1 ]]; then
-    log_info "wsl config"
-    sudo tee "/etc/wsl.conf" > /dev/null <<EOF
-[boot]
-systemd = true
-
-[user]
-default = ${USER_NAME}
-
-[interop]
-appendWindowsPath = false
-
-[automount]
-enabled = true
-root = /mnt
-options = "metadata,umask=22,fmask=11"
-#mountFsTab = true
-EOF
-  fi
-}
 function install_xrdp() {
   sudo apt install xrdp -y
 
@@ -202,20 +194,26 @@ EOF
   fi
 }
 
-install_common
+sudo timedatectl set-timezone "${TZ}"
+#add_apt_yandex_mirrors
+#sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null <<EOF
+#Acquire::Retries "5";
+#EOF
+sudo apt update -y && sudo apt upgrade -y #&& sudo apt full-upgrade -y
+sudo apt install -y coreutils dnsutils curl wget zsh age zip unzip gh htop jq build-essential ca-certificates net-tools
+
+config_wsl
 install_openssh_client
 install_git
-install_ohmyzsh
 install_sops
 install_docker
 install_lando
 install_google_chrome
 install_keepassxc
 install_vagrant
+install_ohmyzsh
 sudo apt install -y ansible nautilus
 #install_xrdp
-
-
 
 log_info "end"
 sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean && exit
