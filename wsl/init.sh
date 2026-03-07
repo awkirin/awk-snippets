@@ -203,6 +203,7 @@ sudo apt update -y && sudo apt upgrade -y #&& sudo apt full-upgrade -y
 sudo apt install -y coreutils dnsutils curl wget zsh age zip unzip gh htop jq build-essential ca-certificates net-tools
 
 config_wsl
+install_brew
 install_openssh_client
 install_git
 install_sops
