@@ -1,6 +1,8 @@
+#!/bin/bash
 sudo apt update -y && sudo apt upgrade -y
 
 sudo apt install -y nautilus git curl wget zsh age
+
 
 WSL2_SSH_AGENT_PATH="/usr/local/bin/wsl2-ssh-agent"
 sudo curl -L -o "$WSL2_SSH_AGENT_PATH" https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
