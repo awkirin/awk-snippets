@@ -1,15 +1,13 @@
 #!/bin/bash
-sudo apt update -y && sudo apt upgrade -y && sudo apt full-upgrade -y
-
-sudo apt install -y nautilus git curl wget zsh age
-
-
-sudo apt install -y xfce4 xfce4-goodies dbus-x11
-dbus-run-session startxfce4
+sudo apt update -y && sudo apt upgrade -y
+#sudo apt full-upgrade -y
 
 
+sudo apt install -y git curl wget zsh age
 
+#sudo apt install -y nautilus
 
+# ssh-agent win to wsl
 WSL2_SSH_AGENT_PATH="/usr/local/bin/wsl2-ssh-agent"
 sudo curl -L -o "$WSL2_SSH_AGENT_PATH" https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
 sudo chmod 755 "$WSL2_SSH_AGENT_PATH"
@@ -18,7 +16,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-cat << 'EOF' > "$HOME/.oh-my-zsh/custom/awkirin.zsh"
+tee "$HOME/.oh-my-zsh/custom/awkirin.zsh" > /dev/null << 'EOF'
 eval $(wsl2-ssh-agent)
 EOF
 
