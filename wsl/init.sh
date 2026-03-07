@@ -1,7 +1,13 @@
 #!/bin/bash
-sudo apt update -y && sudo apt upgrade -y
+sudo apt update -y && sudo apt upgrade -y && sudo apt full-upgrade -y
 
 sudo apt install -y nautilus git curl wget zsh age
+
+
+sudo apt install -y xfce4 xfce4-goodies dbus-x11
+dbus-run-session startxfce4
+
+
 
 
 WSL2_SSH_AGENT_PATH="/usr/local/bin/wsl2-ssh-agent"
