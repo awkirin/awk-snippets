@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# sudo curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/refs/heads/main/wsl/init.sh | bash
+
 set -uEo pipefail
 
 TZ=${TZ:-"Europe/Moscow"}
