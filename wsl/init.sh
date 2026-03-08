@@ -20,6 +20,28 @@ function log_info() {
 }
 
 sudo timedatectl set-timezone "${TZ}"
+
+function add_apt_repos() {
+  sudo add-apt-repository ppa:graphics-drivers/ppa
+  sudo add-apt-repository ppa:videolan/stable-daily
+
+  # keepassxc
+  sudo add-apt-repository -y ppa:phoerious/keepassxc
+
+  # google-chrome
+  curl -fsSL https://dl.google.com/linux/linux_signing_key.pub \
+    | gpg --dearmor | sudo tee /usr/share/keyrings/google-chrome.gpg > /dev/null
+  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" \
+    | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+
+  # yandex-disk
+  curl -fsSL https://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG \
+    | gpg --dearmor | sudo tee /usr/share/keyrings/yandex-disk.gpg > /dev/null
+  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/yandex-disk.gpg] https://repo.yandex.ru/yandex-disk/deb/ stable main" \
+    | sudo tee /etc/apt/sources.list.d/yandex-disk.list > /dev/null
+
+}; add_apt_repos
+
 function add_apt_yandex_mirrors() {
   log_info "add apt yandex mirrors"
   sudo tee /etc/apt/sources.list.d/1000-yandex.list > /dev/null <<EOF
@@ -33,9 +55,14 @@ sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null <<EOF
   Acquire::Retries "5";
 EOF
 sudo apt update -y && sudo apt upgrade -y #&& sudo apt full-upgrade -y
-sudo apt install -y fzf coreutils dnsutils curl wget zsh age zip unzip gh htop jq build-essential ca-certificates net-tools
+sudo apt install -y ca-certificates build-essential coreutils net-tools dnsutils extrepo extrepo-offline-data unzip curl wget htop zip zsh age fzf jq gh ansible nautilus
 
-sudo apt install -y ansible nautilus
+# принять лицензии extrepo
+sudo sed -i 's/# - contrib/- contrib/' /etc/extrepo/config.yaml
+sudo sed -i 's/# - non-free/- non-free/' /etc/extrepo/config.yaml
+
+sudo extrepo enable google_chrome
+
 
 function config_wsl() {
   if [[ "$IS_WSL" -eq 1 ]]; then
