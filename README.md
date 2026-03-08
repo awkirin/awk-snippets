@@ -1,1 +1,1 @@
-yarn config delete proxy
+yarn config delete proxy 
