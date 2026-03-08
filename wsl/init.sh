@@ -54,10 +54,15 @@ EOF
 sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null <<EOF
   Acquire::Retries "5";
 EOF
+
+
+# common
+packages=(ca-certificates build-essential coreutils net-tools dnsutils unzip curl wget htop zip zsh age jq)
+
+packages+=(fzf gh ansible nautilus)
+
 sudo apt update -y && sudo apt upgrade -y #&& sudo apt full-upgrade -y
-sudo apt install -y ca-certificates build-essential coreutils net-tools dnsutils unzip curl wget htop zip zsh age fzf jq gh ansible nautilus
-
-
+sudo apt install -y "${packages[@]}"
 
 #sudo apt install -y extrepo extrepo-offline-data
 ## принять лицензии extrepo
