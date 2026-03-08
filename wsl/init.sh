@@ -55,13 +55,17 @@ sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null <<EOF
   Acquire::Retries "5";
 EOF
 sudo apt update -y && sudo apt upgrade -y #&& sudo apt full-upgrade -y
-sudo apt install -y ca-certificates build-essential coreutils net-tools dnsutils extrepo extrepo-offline-data unzip curl wget htop zip zsh age fzf jq gh ansible nautilus
+sudo apt install -y ca-certificates build-essential coreutils net-tools dnsutils unzip curl wget htop zip zsh age fzf jq gh ansible nautilus
 
-# принять лицензии extrepo
-sudo sed -i 's/# - contrib/- contrib/' /etc/extrepo/config.yaml
-sudo sed -i 's/# - non-free/- non-free/' /etc/extrepo/config.yaml
 
-sudo extrepo enable google_chrome
+
+#sudo apt install -y extrepo extrepo-offline-data
+## принять лицензии extrepo
+#sudo sed -i 's/# - contrib/- contrib/' /etc/extrepo/config.yaml
+#sudo sed -i 's/# - non-free/- non-free/' /etc/extrepo/config.yaml
+#sudo extrepo enable google_chrome
+
+
 
 
 function config_wsl() {
