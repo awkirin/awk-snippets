@@ -69,75 +69,8 @@ function install_extrepo() {
   for repo in "${EXTREPOS[@]}"; do
       sudo extrepo enable "$repo"
   done
+  sudo apt update -y
 }; install_extrepo
-
-if [[ "$IS_WSL" -eq 0 ]]; then
-  function install_yandex_disk() {
-    curl -fsSL https://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG \
-      | gpg --dearmor | sudo tee /usr/share/keyrings/yandex-disk.gpg > /dev/null
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/yandex-disk.gpg] https://repo.yandex.ru/yandex-disk/deb/ stable main" \
-      | sudo tee /etc/apt/sources.list.d/yandex-disk.list > /dev/null
-    sudo apt update -y
-    sudo apt install -y yandex-disk
-  }; install_yandex_disk
-  function install_keepassxc() {
-    log_info "keepassxc"
-    sudo add-apt-repository -y ppa:phoerious/keepassxc
-    sudo apt update -y
-    sudo apt install -y keepassxc
-  }; install_keepassxc
-  function install_google_chrome() {
-    log_info "google-chrome"
-#    curl -fsSL https://dl.google.com/linux/linux_signing_key.pub \
-#      | gpg --dearmor | sudo tee /usr/share/keyrings/google-chrome.gpg > /dev/null
-#    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" \
-#      | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
-#    sudo apt update -y
-    sudo apt install -y google-chrome-stable
-  }; install_google_chrome
-fi
-
-if [[ "$IS_WSL" -eq 1 ]]; then
-  function config_wsl() {
-    log_info "wsl config"
-    sudo tee "/etc/wsl.conf" > /dev/null <<EOF
-[boot]
-systemd = true
-
-[user]
-default = ${USER_NAME}
-
-[interop]
-appendWindowsPath = false
-
-[automount]
-enabled = true
-root = /mnt
-options = "metadata,umask=22,fmask=11"
-#mountFsTab = true
-EOF
-  }; config_wsl
-  function install_wsl2_ssh_agent() {
-    echo "install_wsl2_ssh_agent"
-
-    log_info "wsl ssh-agent"
-    WSL2_SSH_AGENT_PATH="/usr/local/bin/wsl2-ssh-agent"
-    sudo curl -L -o "$WSL2_SSH_AGENT_PATH" https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
-    sudo chmod 755 "$WSL2_SSH_AGENT_PATH"
-
-    if [[ -f "/mnt/c/Users/$USER_NAME/.ssh/config" ]]; then
-      log_info "wsl ssh config"
-      mkdir -p "$USER_HOME/.ssh"
-      cp "/mnt/c/Users/$USER_NAME/.ssh/config" "$USER_HOME/.ssh/config" 2>/dev/null || true
-      chmod 700 "$USER_HOME/.ssh"
-      chmod 600 "$USER_HOME/.ssh/config" 2>/dev/null || true
-    fi
-  }; install_wsl2_ssh_agent
-fi
-
-
-
-
 
 function install_git() {
   log_info "git"
@@ -159,32 +92,6 @@ function install_git() {
   ui = auto
 EOF
 }; install_git
-function install_docker() {
-  if [[ "$IS_WSL" -eq 0 ]]; then
-    log_info "docker"
-    sudo sh -c "$(curl -fsSL get.docker.com)"
-    sudo usermod -aG docker "${USER_NAME}"
-    systemctl enable docker
-    systemctl start docker
-  fi
-}; install_docker
-function install_lando() {
-  if [[ "$IS_WSL" -eq 0 ]]; then
-    log_info "lando"
-    sudo -u "${USER_NAME}" /bin/bash -c "$(curl -fsSL get.lando.dev/setup-lando.sh) --yes"
-  fi
-}; install_lando
-
-
-function install_vagrant() {
-  if [[ "$IS_WSL" -eq 0 ]]; then
-    log_info "vagrant"
-    wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update
-    sudo apt install vagrant
-  fi
-}; install_vagrant
 function install_ohmyzsh() {
   log_info "install oh-my-zsh"
   sudo apt install zsh -y
@@ -247,12 +154,98 @@ EOF
   fi
 }; #install_xrdp
 
+if [[ "$IS_WSL" -eq 0 ]]; then
+  function install_yandex_disk() {
+    curl -fsSL https://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG \
+      | gpg --dearmor | sudo tee /usr/share/keyrings/yandex-disk.gpg > /dev/null
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/yandex-disk.gpg] https://repo.yandex.ru/yandex-disk/deb/ stable main" \
+      | sudo tee /etc/apt/sources.list.d/yandex-disk.list > /dev/null
+    sudo apt update -y
+    sudo apt install -y yandex-disk
+  }; install_yandex_disk
+  function install_keepassxc() {
+    log_info "keepassxc"
+    sudo add-apt-repository -y ppa:phoerious/keepassxc
+    sudo apt update -y
+    sudo apt install -y keepassxc
+  }; install_keepassxc
+  function install_google_chrome() {
+    log_info "google-chrome"
+#    curl -fsSL https://dl.google.com/linux/linux_signing_key.pub \
+#      | gpg --dearmor | sudo tee /usr/share/keyrings/google-chrome.gpg > /dev/null
+#    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" \
+#      | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+#    sudo apt update -y
+    sudo apt install -y google-chrome-stable
+  }; install_google_chrome
+  function install_docker() {
+    log_info "docker"
+    sudo apt install -y docker
+#    sudo sh -c "$(curl -fsSL get.docker.com)"
+#    sudo usermod -aG docker "${USER_NAME}"
+#    systemctl enable docker
+#    systemctl start docker
+  }; install_docker
+  function install_lando() {
+    if [[ "$IS_WSL" -eq 0 ]]; then
+      log_info "lando"
+      sudo -u "${USER_NAME}" /bin/bash -c "$(curl -fsSL get.lando.dev/setup-lando.sh) --yes"
+    fi
+  }; install_lando
+  function install_vagrant() {
+    if [[ "$IS_WSL" -eq 0 ]]; then
+      log_info "vagrant"
+      wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+      sudo apt update
+      sudo apt install vagrant
+    fi
+  }; install_vagrant
+fi
+
+if [[ "$IS_WSL" -eq 1 ]]; then
+  function config_wsl() {
+    log_info "wsl config"
+    sudo tee "/etc/wsl.conf" > /dev/null <<EOF
+[boot]
+systemd = true
+
+[user]
+default = ${USER_NAME}
+
+[interop]
+appendWindowsPath = false
+
+[automount]
+enabled = true
+root = /mnt
+options = "metadata,umask=22,fmask=11"
+#mountFsTab = true
+EOF
+  }; config_wsl
+  function install_wsl2_ssh_agent() {
+    echo "install_wsl2_ssh_agent"
+
+    log_info "wsl ssh-agent"
+    WSL2_SSH_AGENT_PATH="/usr/local/bin/wsl2-ssh-agent"
+    sudo curl -L -o "$WSL2_SSH_AGENT_PATH" https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
+    sudo chmod 755 "$WSL2_SSH_AGENT_PATH"
+
+    if [[ -f "/mnt/c/Users/$USER_NAME/.ssh/config" ]]; then
+      log_info "wsl ssh config"
+      mkdir -p "$USER_HOME/.ssh"
+      cp "/mnt/c/Users/$USER_NAME/.ssh/config" "$USER_HOME/.ssh/config" 2>/dev/null || true
+      chmod 700 "$USER_HOME/.ssh"
+      chmod 600 "$USER_HOME/.ssh/config" 2>/dev/null || true
+    fi
+  }; install_wsl2_ssh_agent
+fi
+
 sudo apt autoremove -y && sudo apt autoclean -y && sudo apt clean
 
-function install_brew() {
-  echo "build-essential"
-  sudo apt install -y build-essential
 
+
+function install_brew() {
   echo "brew"
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
