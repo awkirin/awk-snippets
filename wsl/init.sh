@@ -1,8 +1,6 @@
 #!/bin/bash
-
-# sudo curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/refs/heads/main/wsl/init.sh | bash
-
 set -uEo pipefail
+# sudo curl -fsSL https://raw.githubusercontent.com/awkirin/awk-snippets/refs/heads/main/wsl/init.sh | bash
 
 TZ=${TZ:-"Europe/Moscow"}
 USER_NAME=${USER_NAME:-"awkirin"}
@@ -11,6 +9,7 @@ USER_HOME=$(eval echo "~${USER_NAME}")
 IS_WSL=$(grep -qiE "(Microsoft|WSL)" /proc/version && echo 1 || echo 0)
 
 export DEBIAN_FRONTEND=noninteractive # Чтобы исключить зависание.
+sudo timedatectl set-timezone "${TZ}"
 
 function log_info() {
     local msg="$1"
@@ -19,62 +18,87 @@ function log_info() {
     echo -e "\033[1;32m[INFO] [$timestamp]\033[0m $msg ================================================================="
 }
 
-sudo timedatectl set-timezone "${TZ}"
 
-function add_apt_repos() {
-  sudo add-apt-repository ppa:graphics-drivers/ppa
-  sudo add-apt-repository ppa:videolan/stable-daily
+function config_apt() {
+  log_info ""
+  sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null <<EOF
+Acquire::Retries "5";
+EOF
 
-  # keepassxc
-  sudo add-apt-repository -y ppa:phoerious/keepassxc
-
-  # google-chrome
-  curl -fsSL https://dl.google.com/linux/linux_signing_key.pub \
-    | gpg --dearmor | sudo tee /usr/share/keyrings/google-chrome.gpg > /dev/null
-  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" \
-    | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
-
-  # yandex-disk
-  curl -fsSL https://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG \
-    | gpg --dearmor | sudo tee /usr/share/keyrings/yandex-disk.gpg > /dev/null
-  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/yandex-disk.gpg] https://repo.yandex.ru/yandex-disk/deb/ stable main" \
-    | sudo tee /etc/apt/sources.list.d/yandex-disk.list > /dev/null
-
-}; add_apt_repos
-
-function add_apt_yandex_mirrors() {
-  log_info "add apt yandex mirrors"
-  sudo tee /etc/apt/sources.list.d/1000-yandex.list > /dev/null <<EOF
+  function add_yandex_mirrors() {
+    log_info "add apt yandex mirrors"
+    sudo tee /etc/apt/sources.list.d/1000-yandex.list > /dev/null <<EOF
 deb https://mirror.yandex.ru/ubuntu/ $(lsb_release -cs) main restricted universe multiverse
 deb https://mirror.yandex.ru/ubuntu/ $(lsb_release -cs)-updates main restricted universe multiverse
 deb https://mirror.yandex.ru/ubuntu/ $(lsb_release -cs)-backports main restricted universe multiverse
 deb https://mirror.yandex.ru/ubuntu/ $(lsb_release -cs)-security main restricted universe multiverse
 EOF
-}; #add_apt_yandex_mirrors
-sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null <<EOF
-  Acquire::Retries "5";
-EOF
+  }; yandex_mirrors
 
+  log_info ""
+  sudo add-apt-repository ppa:graphics-drivers/ppa
 
-# common
-packages=(ca-certificates build-essential coreutils net-tools dnsutils unzip curl wget htop zip zsh age jq)
+  log_info ""
+  sudo add-apt-repository ppa:videolan/stable-daily
+}; config_apt
 
-packages+=(fzf gh ansible nautilus)
+sudo apt update -y #&& sudo apt upgrade -y #&& sudo apt full-upgrade -y
+sudo apt install -y ca-certificates build-essential coreutils gnupg net-tools dnsutils curl wget openssh-client git gh zip unzip age jq fzf htop zsh ansible nautilus
 
-sudo apt update -y && sudo apt upgrade -y #&& sudo apt full-upgrade -y
-sudo apt install -y "${packages[@]}"
+function install_extrepo() {
+  sudo apt update -y
+  sudo apt install -y extrepo extrepo-offline-data
+  sudo sed -i 's/# - contrib/- contrib/' /etc/extrepo/config.yaml
+  sudo sed -i 's/# - non-free/- non-free/' /etc/extrepo/config.yaml
+  EXTREPOS=(
+    google_chrome
+    brave_release
+    torproject
+    signal
+    element.io
+    docker-ce
+    kubernetes
+    hashicorp
+    vscode
+    virtualbox
+    helm
+    anydesk
+    tailscale
+    nvidia-docker
+  )
+  for repo in "${EXTREPOS[@]}"; do
+      sudo extrepo enable "$repo"
+  done
+}; install_extrepo
 
-#sudo apt install -y extrepo extrepo-offline-data
-## принять лицензии extrepo
-#sudo sed -i 's/# - contrib/- contrib/' /etc/extrepo/config.yaml
-#sudo sed -i 's/# - non-free/- non-free/' /etc/extrepo/config.yaml
-#sudo extrepo enable google_chrome
+if [[ "$IS_WSL" -eq 0 ]]; then
+  function install_yandex_disk() {
+    curl -fsSL https://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG \
+      | gpg --dearmor | sudo tee /usr/share/keyrings/yandex-disk.gpg > /dev/null
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/yandex-disk.gpg] https://repo.yandex.ru/yandex-disk/deb/ stable main" \
+      | sudo tee /etc/apt/sources.list.d/yandex-disk.list > /dev/null
+    sudo apt update -y
+    sudo apt install -y yandex-disk
+  }; install_yandex_disk
+  function install_keepassxc() {
+    log_info "keepassxc"
+    sudo add-apt-repository -y ppa:phoerious/keepassxc
+    sudo apt update -y
+    sudo apt install -y keepassxc
+  }; install_keepassxc
+  function install_google_chrome() {
+    log_info "google-chrome"
+#    curl -fsSL https://dl.google.com/linux/linux_signing_key.pub \
+#      | gpg --dearmor | sudo tee /usr/share/keyrings/google-chrome.gpg > /dev/null
+#    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" \
+#      | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+#    sudo apt update -y
+    sudo apt install -y google-chrome-stable
+  }; install_google_chrome
+fi
 
-
-
-
-function config_wsl() {
-  if [[ "$IS_WSL" -eq 1 ]]; then
+if [[ "$IS_WSL" -eq 1 ]]; then
+  function config_wsl() {
     log_info "wsl config"
     sudo tee "/etc/wsl.conf" > /dev/null <<EOF
 [boot]
@@ -92,14 +116,10 @@ root = /mnt
 options = "metadata,umask=22,fmask=11"
 #mountFsTab = true
 EOF
-  fi
-}; config_wsl
+  }; config_wsl
+  function install_wsl2_ssh_agent() {
+    echo "install_wsl2_ssh_agent"
 
-function install_openssh_client() {
-  echo "openssh-client"
-  sudo apt install -y openssh-client
-
-  if [[ "$IS_WSL" -eq 1 ]]; then
     log_info "wsl ssh-agent"
     WSL2_SSH_AGENT_PATH="/usr/local/bin/wsl2-ssh-agent"
     sudo curl -L -o "$WSL2_SSH_AGENT_PATH" https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
@@ -112,11 +132,15 @@ function install_openssh_client() {
       chmod 700 "$USER_HOME/.ssh"
       chmod 600 "$USER_HOME/.ssh/config" 2>/dev/null || true
     fi
-  fi
-}; install_openssh_client
+  }; install_wsl2_ssh_agent
+fi
+
+
+
+
+
 function install_git() {
   log_info "git"
-  sudo apt install git -y
   sudo -u "${USER_NAME}" tee "${USER_HOME}"/.gitconfig > /dev/null <<EOF
 [user]
   name = ${USER_NAME}
@@ -150,23 +174,8 @@ function install_lando() {
     sudo -u "${USER_NAME}" /bin/bash -c "$(curl -fsSL get.lando.dev/setup-lando.sh) --yes"
   fi
 }; install_lando
-function install_google_chrome() {
-  if [[ "$IS_WSL" -eq 0 ]]; then
-    log_info "google chrome"
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-    sudo apt update -y
-    sudo apt install -y google-chrome-stable
-  fi
-}; install_google_chrome
-function install_keepassxc() {
-  if [[ "$IS_WSL" -eq 0 ]]; then
-    log_info "keepass-xc"
-    sudo add-apt-repository -y ppa:phoerious/keepassxc
-    sudo apt update -y
-    sudo apt install -y keepassxc
-  fi
-}; install_keepassxc
+
+
 function install_vagrant() {
   if [[ "$IS_WSL" -eq 0 ]]; then
     log_info "vagrant"
