@@ -5,6 +5,7 @@ google.com
 www.google.com
 play.google.com
 ogs.google.com
+fonts.googleapis.com
 notebooklm.google.com
 notebooklm.google
 gstatic.com
@@ -15,15 +16,14 @@ googleusercontent.com
 lh3.googleusercontent.com
 nffaoalbilbmmfgbnbgppjihopabppdk
 region1.analytics.google.com
+www.googletagmanager.com
 )
 
-output_file="domains.csv"
-> "$output_file"
+output_file="domains.csv" > "${output_file}"
 
 for d in "${domains[@]}"; do
-    # Берём только IPv4
     for ip in $(dig +short "$d" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'); do
-        echo "$ip,EUW,NL,NL" >> "$output_file"
+        echo "$ip,EUW,NL,NL" >> "${output_file}"
     done
 done
 
