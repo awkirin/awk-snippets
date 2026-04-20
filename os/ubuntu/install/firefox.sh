@@ -13,5 +13,5 @@ Pin: origin packages.mozilla.org
 Pin-Priority: 1001
 EOF
 
-sudo snap remove firefox
-sudo apt install firefox
+sudo snap remove firefox -y
+sudo apt install firefox -y
