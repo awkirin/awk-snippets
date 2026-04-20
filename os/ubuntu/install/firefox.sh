@@ -3,7 +3,9 @@
 #sudo apt purge snapd
 #sudo rm -rf ~/snap /snap /var/snap /var/lib/snapd
 
-sudo snap remove firefox
+sudo apt install extrepo -y
+sudo extrepo enable mozilla -y
+sudo apt update -y
 
 sudo tee /etc/apt/preferences.d/firefox <<EOF
 Package: firefox
@@ -11,8 +13,5 @@ Pin: origin packages.mozilla.org
 Pin-Priority: 1001
 EOF
 
-sudo apt install extrepo
-sudo extrepo enable mozilla
-
-sudo apt update
+sudo snap remove firefox
 sudo apt install firefox
